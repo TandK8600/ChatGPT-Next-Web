@@ -8,11 +8,13 @@ export const FETCH_TAG_URL = `https://api.github.com/repos/${OWNER}/${REPO}/tags
 export const RUNTIME_CONFIG_DOM = "danger-runtime-config";
 
 export enum Path {
-  Home = "/",
-  Chat = "/chat",
+  Login="/",
+  Home = "/home",
+  Chat = "/",
   Settings = "/settings",
   NewChat = "/new-chat",
-  Masks = "/masks",
+  Masks = "/masks"
+
 }
 
 export enum SlotID {

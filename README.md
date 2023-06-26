@@ -98,6 +98,7 @@ One-Click to deploy well-designed ChatGPT web UI on Vercel.
 
 ## FAQ
 
+
 [简体中文 > 常见问题](./docs/faq-cn.md)
 
 [English > FAQ](./docs/faq-en.md)
