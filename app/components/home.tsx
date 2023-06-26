@@ -3,11 +3,8 @@
 require("../polyfill");
 
 import { useState, useEffect } from "react";
-
-import Login from '../login'
-
+import Login from "../login";
 import styles from "./home.module.scss";
-
 import BotIcon from "../icons/bot.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 
@@ -105,56 +102,53 @@ function Screen() {
   const location = useLocation();
   const isHome = location.pathname === Path.Home;
   const isMobileScreen = useMobileScreen();
-  const token=localStorage.getItem('Infotoken')
+  const token = localStorage.getItem("Infotoken");
 
   useEffect(() => {
     loadAsyncGoogleFont();
   }, []);
 
   setInterval(() => {
-    const info = localStorage.getItem('Infotoken')
-    if(!info){
-      alert("token过期,请重新登录")
-      window.location.reload()
+    const info = localStorage.getItem("Infotoken");
+    if (!info) {
+      alert("token过期,请重新登录");
+      window.location.reload();
     }
-  }, 120000)
+  }, 120000);
 
   return (
-  <div>
-    {token?
-    (
-      <div
-      className={
-        styles.container +
-        ` ${
-          config.tightBorder && !isMobileScreen
-            ? styles["tight-container"]
-            : styles.container
-        }`
-      }
-    >
-      <SideBar className={isHome ? styles["sidebar-show"] : ""} />
+    <div>
+      {token ? (
+        <div
+          className={
+            styles.container +
+            ` ${
+              config.tightBorder && !isMobileScreen
+                ? styles["tight-container"]
+                : styles.container
+            }`
+          }
+        >
+          <SideBar className={isHome ? styles["sidebar-show"] : ""} />
 
-      <div className={styles["window-content"]} id={SlotID.AppBody}>
-        <Routes>
-          <Route path={Path.Home} element={<Chat />} />
-          <Route path={Path.NewChat} element={<NewChat />} />
-          <Route path={Path.Masks} element={<MaskPage />} />
-          <Route path={Path.Chat} element={<Chat />} />
-          <Route path={Path.Settings} element={<Settings />} />
-        </Routes>
-      </div>
+          <div className={styles["window-content"]} id={SlotID.AppBody}>
+            <Routes>
+              <Route path={Path.Home} element={<Chat />} />
+              <Route path={Path.NewChat} element={<NewChat />} />
+              <Route path={Path.Masks} element={<MaskPage />} />
+              <Route path={Path.Chat} element={<Chat />} />
+              <Route path={Path.Settings} element={<Settings />} />
+            </Routes>
+          </div>
+        </div>
+      ) : (
+        <div>
+          <Routes>
+            <Route path={Path.Login} Component={Login} />
+          </Routes>
+        </div>
+      )}
     </div>
-    ):
-    (
-      <div >
-      <Routes>
-          <Route path={Path.Login} Component={Login} />
-      </Routes>
-    </div>
-    )
-    }
-  </div>
   );
 }
 
