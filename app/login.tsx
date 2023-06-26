@@ -40,7 +40,7 @@ export default function Login() {
    return(
         <div className="login">
             <div className="login-main">
-               <div className='logo'></div>
+               {/* <div className='logo'></div> */}
                 <div className="login-title">
                     <div>登录</div>
                     <div></div>
