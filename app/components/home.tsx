@@ -108,17 +108,25 @@ function Screen() {
     loadAsyncGoogleFont();
   }, []);
 
-  setInterval(() => {
+  const time = setInterval(() => {
     const info = localStorage.getItem("Infotoken");
     if (!info) {
       alert("token过期,请重新登录");
-      window.location.reload();
+      clearInterval(time);
+      window.name === "upload" ? window.location.reload() : null;
     }
   }, 120000);
 
+  if (window.name !== "upload") {
+    localStorage.clear();
+    window.location.reload();
+    window.name = "upload";
+    return;
+  }
+
   return (
     <div>
-      {token ? (
+      {token && window.name === "upload" ? (
         <div
           className={
             styles.container +
