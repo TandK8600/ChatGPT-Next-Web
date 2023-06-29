@@ -121,7 +121,6 @@ function Screen() {
     localStorage.clear();
     window.location.reload();
     window.name = "upload";
-    return;
   }
 
   return (
