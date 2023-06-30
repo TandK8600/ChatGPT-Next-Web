@@ -118,7 +118,7 @@ function Screen() {
   }, 120000);
 
   if (window.name !== "upload") {
-    localStorage.clear();
+    localStorage.removeItem("Infotoken");
     window.location.reload();
     window.name = "upload";
   }
