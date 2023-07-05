@@ -76,6 +76,7 @@ const en: RequiredLocaleType = {
     DeleteChat: "Confirm to delete the selected conversation?",
     DeleteToast: "Chat Deleted",
     Revert: "Revert",
+    Set: "Set",
   },
   Settings: {
     Title: "Settings",
