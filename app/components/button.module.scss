@@ -1,17 +1,47 @@
 .icon-button {
   background-color: var(--white);
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
-
   cursor: pointer;
   transition: all 0.3s ease;
   overflow: hidden;
   user-select: none;
   outline: none;
   border: none;
+  color: var(--black);
+  height: 35px;
+  border-radius: 0px 10px 0px 10px;
+  padding: 10px;
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.primary {
+    background-color: var(--primary);
+    color: white;
+
+    path {
+      fill: white !important;
+    }
+  }
+}
+.icon-button-append {
+  background-color: var(--white);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  width: 255px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  user-select: none;
+  outline: none;
+  border: 1px solid rgba(158,157,217,0.5);
   color: var(--black);
 
   &[disabled] {

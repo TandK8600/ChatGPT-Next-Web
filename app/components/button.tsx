@@ -12,11 +12,12 @@ export function IconButton(props: {
   className?: string;
   title?: string;
   disabled?: boolean;
+  lang?: boolean;
 }) {
   return (
     <button
       className={
-        styles["icon-button"] +
+        styles[props.lang ? "icon-button-append" : "icon-button"] +
         ` ${props.bordered && styles.border} ${props.shadow && styles.shadow} ${
           props.className ?? ""
         } clickable ${styles[props.type ?? ""]}`

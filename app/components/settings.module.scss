@@ -70,3 +70,29 @@
     }
   }
 }
+.edit{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.edit-box{
+  width: 49%;
+  padding:10px;
+  height: auto;
+  box-sizing: border-box;
+  border: 1px solid rgba(157,158,211,1);
+  border-radius: 0px 10px 0px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.edit-box-title{
+  font-size: 16px;
+}
+.edit-box-text{
+  font-size: 12px;
+  margin: 5px 0px;
+  color: #666;
+}

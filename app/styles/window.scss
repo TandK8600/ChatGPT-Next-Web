@@ -11,6 +11,9 @@
 .window-header-title {
   max-width: calc(100% - 100px);
   overflow: hidden;
+  // display: flex;
+  // justify-content: flex-start;
+  // align-items: center;
 
   .window-header-main-title {
     font-size: 20px;
@@ -23,7 +26,7 @@
   }
 
   .window-header-sub-title {
-    font-size: 14px;
+    font-size: 12px;
     margin-top: 5px;
   }
 }

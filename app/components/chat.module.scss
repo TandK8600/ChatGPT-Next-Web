@@ -1,23 +1,27 @@
 @import "../styles/animation.scss";
 
 .chat-input-actions {
-  display: flex;
-  flex-wrap: wrap;
-
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: center;
+  // align-items: center;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+ 
   .chat-input-action {
     display: inline-flex;
-    border-radius: 20px;
+    border-radius: 5px;
     font-size: 12px;
     background-color: var(--white);
     color: var(--black);
     border: var(--border-in-light);
-    padding: 4px 10px;
+    padding: 10px 0px;
     animation: slide-in ease 0.3s;
     box-shadow: var(--card-shadow);
     transition: all ease 0.3s;
     margin-bottom: 10px;
     align-items: center;
-
+    justify-content: center;
     &:not(:last-child) {
       margin-right: 5px;
     }

@@ -332,8 +332,175 @@ export function Settings() {
         </div>
       </div>
       <div className={styles["settings"]}>
+        <div className={styles["edit"]}>
+          <div className={styles["edit-box"]}>
+            <div className={styles["edit-box-title"]}>
+              {Locale.Settings.SendPreviewBubble.Title}
+            </div>
+            <div className={styles["edit-box-text"]}>
+              {Locale.Settings.SendPreviewBubble.SubTitle}
+            </div>
+            <input
+              type="checkbox"
+              checked={config.sendPreviewBubble}
+              onChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (config.sendPreviewBubble = e.currentTarget.checked),
+                )
+              }
+            ></input>
+          </div>
+          <div className={styles["edit-box"]}>
+            <div className={styles["edit-box-title"]}>
+              {Locale.Settings.Mask.Title}
+            </div>
+            <div className={styles["edit-box-text"]}>
+              {Locale.Settings.Mask.SubTitle}
+            </div>
+            <input
+              type="checkbox"
+              checked={!config.dontShowMaskSplashScreen}
+              onChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (config.dontShowMaskSplashScreen =
+                      !e.currentTarget.checked),
+                )
+              }
+            ></input>
+          </div>
+        </div>
+        <div className={styles["edit"]}>
+          <div className={styles["edit-box"]}>
+            <div className={styles["edit-box-title"]}>
+              {Locale.Settings.SendKey}
+            </div>
+            <div className={styles["edit-box-text"]}></div>
+            <Select
+              value={config.submitKey}
+              onChange={(e) => {
+                updateConfig(
+                  (config) =>
+                    (config.submitKey = e.target.value as any as SubmitKey),
+                );
+              }}
+            >
+              {Object.values(SubmitKey).map((v) => (
+                <option value={v} key={v}>
+                  {v}
+                </option>
+              ))}
+            </Select>
+          </div>
+          <div className={styles["edit-box"]}>
+            <div className={styles["edit-box-title"]}>
+              {Locale.Settings.Theme}
+            </div>
+            <div className={styles["edit-box-text"]}></div>
+            <Select
+              value={config.theme}
+              onChange={(e) => {
+                updateConfig(
+                  (config) => (config.theme = e.target.value as any as Theme),
+                );
+              }}
+            >
+              {Object.values(Theme).map((v) => (
+                <option value={v} key={v}>
+                  {v}
+                </option>
+              ))}
+            </Select>
+          </div>
+        </div>
+        <div className={styles["edit"]}>
+          <div className={styles["edit-box"]}>
+            <div className={styles["edit-box-title"]}>
+              {Locale.Settings.Prompt.Disable.Title}
+            </div>
+            <div className={styles["edit-box-text"]}>
+              {Locale.Settings.Prompt.Disable.SubTitle}
+            </div>
+            <input
+              type="checkbox"
+              checked={config.disablePromptHint}
+              onChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (config.disablePromptHint = e.currentTarget.checked),
+                )
+              }
+            ></input>
+          </div>
+          <div className={styles["edit-box"]}>
+            <div className={styles["edit-box-title"]}>
+              {Locale.Settings.Prompt.List}
+            </div>
+            <div className={styles["edit-box-text"]}>
+              {Locale.Settings.Prompt.ListCount(builtinCount, customCount)}
+            </div>
+            <IconButton
+              icon={<EditIcon />}
+              text={Locale.Settings.Prompt.Edit}
+              onClick={() => setShowPromptModal(true)}
+            />
+          </div>
+        </div>
+        <div className={styles["edit"]}>
+          <div className={styles["edit-box"]}>
+            <div className={styles["edit-box-title"]}>
+              {Locale.Settings.Update.Version(currentVersion ?? "unknown")}
+            </div>
+            <div className={styles["edit-box-text"]}>
+              {checkingUpdate
+                ? Locale.Settings.Update.IsChecking
+                : hasNewVersion
+                ? Locale.Settings.Update.FoundUpdate(remoteId ?? "ERROR")
+                : Locale.Settings.Update.IsLatest}
+            </div>
+            {checkingUpdate ? (
+              <LoadingIcon />
+            ) : hasNewVersion ? (
+              <Link href={UPDATE_URL} target="_blank" className="link">
+                {Locale.Settings.Update.GoToUpdate}
+              </Link>
+            ) : (
+              <IconButton
+                icon={<ResetIcon></ResetIcon>}
+                text={Locale.Settings.Update.CheckUpdate}
+                onClick={() => checkUpdate(true)}
+              />
+            )}
+          </div>
+          <div className={styles["edit-box"]}>
+            <div className={styles["edit-box-title"]}>
+              {Locale.Settings.Avatar}
+            </div>
+            <div className={styles["edit-box-text"]}></div>
+            <Popover
+              onClose={() => setShowEmojiPicker(false)}
+              content={
+                <AvatarPicker
+                  onEmojiClick={(avatar: string) => {
+                    updateConfig((config) => (config.avatar = avatar));
+                    setShowEmojiPicker(false);
+                  }}
+                />
+              }
+              open={showEmojiPicker}
+            >
+              <div
+                className={styles.avatar}
+                onClick={() => setShowEmojiPicker(true)}
+              >
+                <Avatar avatar={config.avatar} />
+              </div>
+            </Popover>
+          </div>
+        </div>
         <List>
-          <ListItem title={Locale.Settings.Avatar}>
+          {/* <ListItem title={Locale.Settings.Avatar}>
             <Popover
               onClose={() => setShowEmojiPicker(false)}
               content={
@@ -378,9 +545,9 @@ export function Settings() {
                 onClick={() => checkUpdate(true)}
               />
             )}
-          </ListItem>
+          </ListItem> */}
 
-          <ListItem title={Locale.Settings.SendKey}>
+          {/* <ListItem title={Locale.Settings.SendKey}>
             <Select
               value={config.submitKey}
               onChange={(e) => {
@@ -413,7 +580,7 @@ export function Settings() {
                 </option>
               ))}
             </Select>
-          </ListItem>
+          </ListItem> */}
 
           <ListItem title={Locale.Settings.Lang.Name}>
             <Select
@@ -449,7 +616,7 @@ export function Settings() {
             ></InputRange>
           </ListItem>
 
-          <ListItem
+          {/* <ListItem
             title={Locale.Settings.SendPreviewBubble.Title}
             subTitle={Locale.Settings.SendPreviewBubble.SubTitle}
           >
@@ -480,10 +647,8 @@ export function Settings() {
                 )
               }
             ></input>
-          </ListItem>
-        </List>
+          </ListItem> */}
 
-        <List>
           {enabledAccessControl ? (
             <ListItem
               title={Locale.Settings.AccessCode.Title}
@@ -541,9 +706,8 @@ export function Settings() {
               />
             )}
           </ListItem>
-        </List>
 
-        <List>
+          {/* <List>
           <ListItem
             title={Locale.Settings.Prompt.Disable.Title}
             subTitle={Locale.Settings.Prompt.Disable.SubTitle}
@@ -573,9 +737,8 @@ export function Settings() {
               onClick={() => setShowPromptModal(true)}
             />
           </ListItem>
-        </List>
+        </List> */}
 
-        <List>
           <ModelConfigList
             modelConfig={config.modelConfig}
             updateConfig={(updater) => {

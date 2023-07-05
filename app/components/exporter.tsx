@@ -72,30 +72,49 @@ function Steps<
   const stepCount = steps.length;
 
   return (
-    <div className={styles["steps"]}>
-      <div className={styles["steps-progress"]}>
+    <div>
+      {/* <div className={styles["steps-progress"]}>
         <div
           className={styles["steps-progress-inner"]}
           style={{
             width: `${((props.index + 1) / stepCount) * 100}%`,
           }}
         ></div>
-      </div>
-      <div className={styles["steps-inner"]}>
+      </div> */}
+      <div className={styles["steps-more"]}>
         {steps.map((step, i) => {
           return (
+            // <div
+            //   key={i}
+            //   className={`${styles["step"]}
+            //    ${styles[i <= props.index ? "step-finished" : ""]}
+            //    ${i === props.index && styles["step-current"]}
+            //   clickable`
+            // }
+            //   onClick={() => {
+            //     props.onStepChange?.(i);
+            //   }}
+            //   role="button"
+            // >
+            //   {/* <span className={styles["step-index"]}>{i + 1}</span> */}
+            //   <span className={styles["step-name"]}>{step.name}</span>
+            // </div>
             <div
               key={i}
-              className={`${styles["step"]} ${
-                styles[i <= props.index ? "step-finished" : ""]
-              } ${i === props.index && styles["step-current"]} clickable`}
               onClick={() => {
                 props.onStepChange?.(i);
               }}
               role="button"
             >
-              <span className={styles["step-index"]}>{i + 1}</span>
-              <span className={styles["step-name"]}>{step.name}</span>
+              <span
+                className={
+                  i === props.index
+                    ? styles["step-active"]
+                    : styles["step-grey"]
+                }
+              >
+                {step.name}
+              </span>
             </div>
           );
         })}
@@ -159,7 +178,7 @@ export function MessageExporter() {
         className={styles["message-exporter-body"]}
         style={currentStep.value !== "select" ? { display: "none" } : {}}
       >
-        <List>
+        {/* <List>
           <ListItem
             title={Locale.Export.Format.Title}
             subTitle={Locale.Export.Format.SubTitle}
@@ -194,7 +213,62 @@ export function MessageExporter() {
               }}
             ></input>
           </ListItem>
-        </List>
+        </List> */}
+        <div className={styles["message-flex"]}>
+          <div className={styles["message-solid"]}></div>
+          <div>选择配置</div>
+          <div className={styles["message-solid"]}></div>
+        </div>
+        <div className={styles["exporter-box"]}>
+          <div className={styles["exporter-box-cneter"]}>
+            <div className={styles["exporter-box-title"]}>
+              {Locale.Export.Format.Title}
+            </div>
+            <div className={styles["exporter-box-text"]}>
+              ({Locale.Export.Format.SubTitle})
+            </div>
+            <div className={styles["exporter-box-select"]}>
+              <Select
+                value={exportConfig.format}
+                onChange={(e) =>
+                  updateExportConfig(
+                    (config) =>
+                      (config.format = e.currentTarget.value as ExportFormat),
+                  )
+                }
+              >
+                {formats.map((f) => (
+                  <option key={f} value={f}>
+                    {f}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          </div>
+          <div className={styles["exporter-box-cneter"]}>
+            <div className={styles["exporter-box-title"]}>
+              {Locale.Export.IncludeContext.Title}
+            </div>
+            <div className={styles["exporter-box-text"]}>
+              ({Locale.Export.IncludeContext.SubTitle})
+            </div>
+            <div>
+              <div className={styles["exporter-box-select"]}>
+                <input
+                  type="checkbox"
+                  checked={exportConfig.includeContext}
+                  onChange={(e) => {
+                    updateExportConfig(
+                      (config) =>
+                        (config.includeContext = e.currentTarget.checked),
+                    );
+                  }}
+                ></input>
+                <div>{exportConfig.includeContext ? " (包含)" : " (不含)"}</div>
+              </div>
+            </div>
+          </div>
+        </div>
         <MessageSelector
           selection={selection}
           updateSelection={updateSelection}

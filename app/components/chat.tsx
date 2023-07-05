@@ -869,13 +869,19 @@ export function Chat() {
             rows={inputRows}
             autoFocus={autoFocus}
           />
-          <IconButton
+          {/* <IconButton
             icon={<SendWhiteIcon />}
             text={Locale.Chat.Send}
             className={styles["chat-input-send"]}
             type="primary"
             onClick={() => doSubmit(userInput)}
-          />
+          /> */}
+          <div
+            className={styles["chat-input-submit"]}
+            onClick={() => doSubmit(userInput)}
+          >
+            发送
+          </div>
         </div>
       </div>
 

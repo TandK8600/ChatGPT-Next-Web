@@ -129,86 +129,95 @@ export function MessageSelector(props: {
   const LATEST_COUNT = 4;
 
   return (
-    <div className={styles["message-selector"]}>
-      <div className={styles["message-filter"]}>
-        <input
-          type="text"
-          placeholder={Locale.Select.Search}
-          className={styles["filter-item"] + " " + styles["search-bar"]}
-          value={searchInput}
-          onInput={(e) => {
-            setSearchInput(e.currentTarget.value);
-            doSearch(e.currentTarget.value);
-          }}
-        ></input>
-
-        <div className={styles["actions"]}>
-          <IconButton
-            text={Locale.Select.All}
-            bordered
-            className={styles["filter-item"]}
-            onClick={selectAll}
-          />
-          <IconButton
-            text={Locale.Select.Latest}
-            bordered
-            className={styles["filter-item"]}
-            onClick={() =>
-              props.updateSelection((selection) => {
-                selection.clear();
-                messages
-                  .slice(messageCount - LATEST_COUNT)
-                  .forEach((m) => selection.add(m.id!));
-              })
-            }
-          />
-          <IconButton
-            text={Locale.Select.Clear}
-            bordered
-            className={styles["filter-item"]}
-            onClick={() =>
-              props.updateSelection((selection) => selection.clear())
-            }
-          />
-        </div>
+    <div>
+      <div className={styles["message-flex"]}>
+        <div className={styles["message-solid"]}></div>
+        <div>选取对话</div>
+        <div className={styles["message-solid"]}></div>
       </div>
+      <div className={styles["message-selector"]}>
+        <div className={styles["message-filter"]}>
+          <input
+            type="text"
+            placeholder={Locale.Select.Search}
+            className={styles["filter-item"] + " " + styles["search-bar"]}
+            value={searchInput}
+            onInput={(e) => {
+              setSearchInput(e.currentTarget.value);
+              doSearch(e.currentTarget.value);
+            }}
+          ></input>
 
-      <div className={styles["messages"]}>
-        {messages.map((m, i) => {
-          if (!isInSearchResult(m.id!)) return null;
-
-          return (
-            <div
-              className={`${styles["message"]} ${
-                props.selection.has(m.id!) && styles["message-selected"]
-              }`}
-              key={i}
-              onClick={() => {
+          <div className={styles["actions"]}>
+            <IconButton
+              text={Locale.Select.All}
+              bordered
+              className={styles["filter-item"]}
+              onClick={selectAll}
+            />
+            <IconButton
+              text={Locale.Select.Latest}
+              bordered
+              className={styles["filter-item"]}
+              onClick={() =>
                 props.updateSelection((selection) => {
-                  const id = m.id ?? i;
-                  selection.has(id) ? selection.delete(id) : selection.add(id);
-                });
-                onClickIndex(i);
-              }}
-            >
-              <div className={styles["avatar"]}>
-                {m.role === "user" ? (
-                  <Avatar avatar={config.avatar}></Avatar>
-                ) : (
-                  <MaskAvatar mask={session.mask} />
-                )}
-              </div>
-              <div className={styles["body"]}>
-                <div className={styles["date"]}>
-                  {new Date(m.date).toLocaleString()}
+                  selection.clear();
+                  messages
+                    .slice(messageCount - LATEST_COUNT)
+                    .forEach((m) => selection.add(m.id!));
+                })
+              }
+            />
+            <IconButton
+              text={Locale.Select.Clear}
+              bordered
+              className={styles["filter-item"]}
+              onClick={() =>
+                props.updateSelection((selection) => selection.clear())
+              }
+            />
+          </div>
+        </div>
+
+        <div className={styles["messages"]}>
+          {messages.map((m, i) => {
+            if (!isInSearchResult(m.id!)) return null;
+
+            return (
+              <div
+                className={`${styles["message"]} ${
+                  props.selection.has(m.id!) && styles["message-selected"]
+                }`}
+                key={i}
+                onClick={() => {
+                  props.updateSelection((selection) => {
+                    const id = m.id ?? i;
+                    selection.has(id)
+                      ? selection.delete(id)
+                      : selection.add(id);
+                  });
+                  onClickIndex(i);
+                }}
+              >
+                <div className={styles["avatar"]}>
+                  {m.role === "user" ? (
+                    <Avatar avatar={config.avatar}></Avatar>
+                  ) : (
+                    <MaskAvatar mask={session.mask} />
+                  )}
                 </div>
-                <div className={`${styles["content"]} one-line`}>
-                  {m.content}
+                <div className={styles["body"]}>
+                  <div className={styles["date"]}>
+                    {new Date(m.date).toLocaleString()}
+                  </div>
+                  <div className={`${styles["content"]} one-line`}>
+                    {m.content}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );

@@ -136,22 +136,38 @@ export function NewChat() {
           ></IconButton>
         )}
       </div>
-      <div className={styles["mask-cards"]}>
-        <div className={styles["mask-card"]}>
-          <EmojiAvatar avatar="1f606" size={24} />
+      <div className={styles["mask-flex"]}>
+        <div className={styles["mask-solids"]}>
+          <div className={styles["title"]}>{Locale.NewChat.Title}</div>
+        </div>
+        <div className={styles["mask-cards"]}>
+          <div className={styles["mask-card"]}>
+            <EmojiAvatar avatar="1f499" size={24} />
+          </div>
+          {/* <div className={styles["mask-card"]}>
+          <EmojiAvatar avatar="1f345" size={24} />
         </div>
         <div className={styles["mask-card"]}>
-          <EmojiAvatar avatar="1f916" size={24} />
+          <EmojiAvatar avatar="1f555" size={24} />
         </div>
         <div className={styles["mask-card"]}>
-          <EmojiAvatar avatar="1f479" size={24} />
+          <EmojiAvatar avatar="1f404" size={24} />
+        </div>
+        <div className={styles["mask-card"]}>
+          <EmojiAvatar avatar="1f377" size={24} />
+        </div>
+        <div className={styles["mask-card"]}>
+          <EmojiAvatar avatar="1f505" size={24} />
+        </div> */}
+          <div className={styles["mask-card"]}>
+            <EmojiAvatar avatar="1f563" size={24} />
+          </div>
+          <div className={styles["mask-solid"]}>
+            <div className={styles["sub-title"]}>{Locale.NewChat.SubTitle}</div>
+          </div>
         </div>
       </div>
-
-      <div className={styles["title"]}>{Locale.NewChat.Title}</div>
-      <div className={styles["sub-title"]}>{Locale.NewChat.SubTitle}</div>
-
-      <div className={styles["actions"]}>
+      {/* <div className={styles["actions"]}>
         <IconButton
           text={Locale.NewChat.More}
           onClick={() => navigate(Path.Masks)}
@@ -168,6 +184,12 @@ export function NewChat() {
           shadow
           className={styles["skip"]}
         />
+      </div> */}
+      <div className={styles["check"]} onClick={() => navigate(Path.Masks)}>
+        {Locale.NewChat.More}
+      </div>
+      <div className={styles["start"]} onClick={() => startChat()}>
+        {Locale.NewChat.Skip}
       </div>
 
       <div className={styles["masks"]} ref={maskRef}>

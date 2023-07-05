@@ -1,3 +1,16 @@
+.message-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+.message-solid{
+  width: 35%;
+  border-bottom: 2px dotted #999;
+  margin:0px 5px;
+}
 .message-selector {
   .message-filter {
     display: flex;

@@ -7,7 +7,7 @@ const cn = {
       "访问密码不正确或为空，请前往[设置](/#/settings)页输入正确的访问密码，或者填入你自己的 OpenAI API Key。",
   },
   ChatItem: {
-    ChatItemCount: (count: number) => `${count} 条对话`,
+    ChatItemCount: (count: number) => `对话数量：${count}条`,
   },
   Chat: {
     SubTitle: (count: number) => `与 ChatGPT 的 ${count} 条对话`,
@@ -36,7 +36,7 @@ const cn = {
     },
   },
   Export: {
-    Title: "分享聊天记录",
+    Title: "分享对话",
     Copy: "全部复制",
     Download: "下载文件",
     Share: "分享到 ShareGPT",
@@ -51,15 +51,15 @@ const cn = {
       SubTitle: "是否在消息中展示面具上下文",
     },
     Steps: {
-      Select: "选取",
+      Select: "选择",
       Preview: "预览",
     },
   },
   Select: {
-    Search: "搜索消息",
-    All: "选取全部",
-    Latest: "最近几条",
-    Clear: "清除选中",
+    Search: "搜索对话内容...",
+    All: "全选",
+    Latest: "近几条",
+    Clear: "取消选中",
   },
   Memory: {
     Title: "历史摘要",
@@ -74,6 +74,7 @@ const cn = {
     DeleteChat: "确认删除选中的对话？",
     DeleteToast: "已删除会话",
     Revert: "撤销",
+    Set: "设置",
   },
   Settings: {
     Title: "设置",
@@ -241,8 +242,8 @@ const cn = {
     Skip: "直接开始",
     NotShow: "不再展示",
     ConfirmNoShow: "确认禁用？禁用后可以随时在设置中重新启用。",
-    Title: "挑选一个面具",
-    SubTitle: "现在开始，与面具背后的灵魂思维碰撞",
+    Title: "请选择一个面具",
+    SubTitle: "与面具背后的灵魂思维碰撞",
     More: "查看全部",
   },
 

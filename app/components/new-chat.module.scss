@@ -1,5 +1,46 @@
 @import "../styles/animation.scss";
+.check{
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: rgba(157,158,211,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 50px;
+  top:160px;
 
+}
+.start{
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 30px;
+  top:140px
+}
+.mask-flex{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mask-solid{
+  width: 60%;
+  height: 2px;
+  border-top: 1px solid rgba(157,158,211);
+  border-bottom: 1px solid rgba(157,158,211);
+  margin: -5px 10px;
+}
+.mask-solids{
+  width: 30%;
+  height: 2px;
+  border-top: 1px solid rgba(157,158,211);
+  border-bottom: 1px solid rgba(157,158,211);
+  margin: 0px 10px;
+}
 .new-chat {
   height: 100%;
   width: 100%;
@@ -7,6 +48,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  position: relative;
 
   .mask-header {
     display: flex;
@@ -31,25 +73,33 @@
       background-color: var(--white);
       transform: scale(1);
 
-      &:first-child {
-        transform: rotate(-15deg) translateY(5px);
+      &:nth-child(2n) {
+        transform: rotate(-30deg) translateY(5px);
       }
 
-      &:last-child {
-        transform: rotate(15deg) translateY(5px);
+      &:nth-child(2n-1) {
+        transform: rotate(30deg) translateY(5px);
+        scale: 1.2;
+      }
+      &:nth-child(4n) {
+        transform: rotate(0deg) translateY(5px);
+        scale: 0.8;
       }
     }
   }
 
   .title {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: bolder;
     margin-bottom: 1vh;
     animation: slide-in ease 0.35s;
+    margin-top: -40px;
   }
 
   .sub-title {
     animation: slide-in ease 0.4s;
+    margin-top: -23px;
+    width: 100px;
   }
 
   .actions {
@@ -71,12 +121,13 @@
     overflow: auto;
     align-items: center;
     padding-top: 20px;
+    margin-top: 30px;
 
     $linear: linear-gradient(
       to bottom,
-      rgba(0, 0, 0, 0),
+      rgba(157, 158, 211),
       rgba(0, 0, 0, 1),
-      rgba(0, 0, 0, 0)
+      rgba(157, 158, 211)
     );
 
     -webkit-mask-image: $linear;
@@ -86,10 +137,9 @@
 
     .mask-row {
       display: flex;
-      // justify-content: center;
       margin-bottom: 10px;
 
-      @for $i from 1 to 10 {
+      @for $i from 1 to 5 {
         &:nth-child(#{$i * 2}) {
           margin-left: 50px;
         }
@@ -97,12 +147,12 @@
 
       .mask {
         display: flex;
+        flex-direction: column;
         align-items: center;
         padding: 10px 14px;
         border: var(--border-in-light);
         box-shadow: var(--card-shadow);
         background-color: var(--white);
-        border-radius: 10px;
         margin-right: 10px;
         max-width: 8em;
         transform: scale(1);
