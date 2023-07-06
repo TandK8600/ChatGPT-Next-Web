@@ -1,18 +1,21 @@
-import axios from 'axios'
+import axios from "axios";
 
-let rootUrl = "https://api.freehands.cn/"
+let rootUrl = "http://gpt.yunwooo.com";
 
-interface LoginData{
-    account:string
-    password:string
+interface LoginData {
+  account: string;
+  password: string;
 }
 
-export function LoginApi(param:LoginData){
-    return new Promise((resolve,reject)=>{
-        axios.post(rootUrl+'/v1/users/login',param).then(res=>{
-            resolve(res.data)
-        }).catch((err)=>{
-            reject(err)
-        })
-    })
+export function LoginApi(data: LoginData) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(rootUrl + "/web/user/login", data)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
 }

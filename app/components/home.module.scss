@@ -20,6 +20,9 @@
 .container {
   @include container();
 }
+.sidebar-top{
+  margin-top: 10px;
+}
 
 @media only screen and (min-width: 600px) {
   .tight-container {
@@ -57,7 +60,7 @@
   .sidebar-header-bar {
     display: flex;
     align-items: center;
-    margin-top: 10px;
+    margin: -2px 0px 10px;
 
     .sidebar-bar-button {
       flex-grow: 1;
@@ -173,7 +176,6 @@
   user-select: none;
   border: 2px solid transparent;
   position: relative;
-  border: 2px solid #fff;
 }
 
 .chat-item:hover {

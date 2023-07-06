@@ -10,6 +10,8 @@ interface Response {
 
 export default function Login() {
   const [formData, setFormData] = useState({ account: "", password: "" });
+  const [isLogin, setIsLogin] = useState(true);
+  const [title, setTitle] = useState("");
   const submit = async () => {
     console.log(formData);
     if (!formData.account) {
@@ -29,6 +31,14 @@ export default function Login() {
       window.location.reload();
       return;
     }
+    if (data.code === 604) {
+      // 被禁用/过期的操作
+      setIsLogin(false);
+      setTitle(data.msg);
+      return;
+    }
+    console.log(data.code);
+
     alert(data.msg);
   };
   const changePhone = (e: { target: { value: string } }) => {
@@ -40,37 +50,49 @@ export default function Login() {
 
   return (
     <div className="login">
-      <div className="login-main">
-        {/* <div className='logo'></div> */}
-        <div className="login-title">
-          <div>登录</div>
-          <div></div>
-        </div>
-        <div className="form-box">
-          <div className="form-item">
-            <div className="form-item-title">账号</div>
-            <input
-              type="text"
-              onChange={changePhone}
-              value={formData.account}
-              placeholder="请输入账号"
-            />
+      {isLogin ? (
+        <div className="login-main">
+          <div className="login-title">
+            <div>登录</div>
+            <div></div>
           </div>
-          <div className="form-item">
-            <div className="form-item-title">密码</div>
-            <input
-              type="password"
-              onChange={changeCode}
-              value={formData.password}
-              placeholder="请输入密码"
-            />
-            <div className="code"></div>
+          <div className="form-box">
+            <div className="form-item">
+              <div className="form-item-title">账号</div>
+              <input
+                type="text"
+                onChange={changePhone}
+                value={formData.account}
+                placeholder="请输入账号"
+              />
+            </div>
+            <div className="form-item">
+              <div className="form-item-title">密码</div>
+              <input
+                type="password"
+                onChange={changeCode}
+                value={formData.password}
+                placeholder="请输入密码"
+              />
+              <div className="code"></div>
+            </div>
+          </div>
+          <div className="submit" onClick={submit}>
+            登录
           </div>
         </div>
-        <div className="submit" onClick={submit}>
-          登录
+      ) : (
+        <div className="login-main">
+          <div className="login-title">
+            <div>提示</div>
+            <div></div>
+          </div>
+          {/* 文案 */}
+          <div className="login-content">{title}</div>
+          {/* 二维码 */}
+          <div className="login-code"></div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

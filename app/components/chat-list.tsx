@@ -21,6 +21,7 @@ import { useRef, useEffect } from "react";
 export function ChatItem(props: {
   onClick?: () => void;
   onDelete?: () => void;
+  onTouchStart?: () => void;
   title: string;
   count: number;
   time: string;
@@ -46,6 +47,7 @@ export function ChatItem(props: {
             props.selected && styles["chat-item-selected"]
           }`}
           onClick={props.onClick}
+          onTouchStart={props.onTouchStart}
           ref={(ele) => {
             draggableRef.current = ele;
             provided.innerRef(ele);
@@ -138,6 +140,10 @@ export function ChatList(props: { narrow?: boolean }) {
                 index={i}
                 selected={i === selectedIndex}
                 onClick={() => {
+                  navigate(Path.Chat);
+                  selectSession(i);
+                }}
+                onTouchStart={() => {
                   navigate(Path.Chat);
                   selectSession(i);
                 }}

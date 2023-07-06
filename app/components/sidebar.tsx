@@ -125,11 +125,12 @@ export function SideBar(props: { className?: string }) {
           与傻儿子畅聊的快乐时光
         </div>
       </div>
-      {/* 新增聊天 */}
-      <div style={{ marginBottom: "20px" }}>
+      {/* 新的聊天 */}
+      <div className={styles["sidebar-header-bar"]}>
         <IconButton
           lang={true}
           icon={<AddIcon />}
+          className={styles["sidebar-bar-button"]}
           text={shouldNarrow ? undefined : Locale.Home.NewChat}
           onClick={() => {
             if (config.dontShowMaskSplashScreen) {
@@ -150,55 +151,48 @@ export function SideBar(props: { className?: string }) {
           }
         }}
       >
+        {/* 聊天列表 */}
         <ChatList narrow={shouldNarrow} />
       </div>
-      <div className={styles["sidebar-header-bar"]}>
-        <IconButton
-          icon={<MaskIcon />}
-          text={shouldNarrow ? undefined : Locale.Mask.Name}
-          className={styles["sidebar-bar-button"]}
-          onClick={() => navigate(Path.NewChat, { state: { fromHome: true } })}
-          shadow
-        />
-        {/* <IconButton
-          icon={<PluginIcon />}
-          text={shouldNarrow ? undefined : Locale.Plugin.Name}
-          className={styles["sidebar-bar-button"]}
-          onClick={() => showToast(Locale.WIP)}
-          shadow
-        /> */}
-      </div>
-      <div className={styles["sidebar-tail"]}>
-        <div className={styles["sidebar-actions"]}>
-          <div className={styles["sidebar-action"] + " " + styles.mobile}>
+      <div className={styles["sidebar-top"]}>
+        {/* 面具按钮 */}
+        <div className={styles["sidebar-header-bar"]}>
+          <IconButton
+            icon={<MaskIcon />}
+            text={shouldNarrow ? undefined : Locale.Mask.Name}
+            className={styles["sidebar-bar-button"]}
+            onClick={() =>
+              navigate(Path.NewChat, { state: { fromHome: true } })
+            }
+            shadow
+          />
+        </div>
+        {/* 删除对话 */}
+        <div className={styles["sidebar-header-bar"]}>
+          <IconButton
+            icon={<CloseIcon />}
+            className={styles["sidebar-bar-button"]}
+            text="删除"
+            onClick={() => {
+              if (confirm(Locale.Home.DeleteChat)) {
+                chatStore.deleteSession(chatStore.currentSessionIndex);
+              }
+            }}
+          />
+        </div>
+        {/* 设置按钮 */}
+        <Link to={Path.Settings} style={{ textDecoration: "none" }}>
+          <div className={styles["sidebar-header-bar"]}>
             <IconButton
-              icon={<CloseIcon />}
-              onClick={() => {
-                if (confirm(Locale.Home.DeleteChat)) {
-                  chatStore.deleteSession(chatStore.currentSessionIndex);
-                }
-              }}
+              icon={<SettingsIcon />}
+              className={styles["sidebar-bar-button"]}
+              lang={true}
+              text={Locale.Home.Set}
+              shadow
             />
           </div>
-
-          <div className={styles["sidebar-action"]}>
-            <Link to={Path.Settings} style={{ textDecoration: "none" }}>
-              <IconButton
-                icon={<SettingsIcon />}
-                lang={true}
-                text={Locale.Home.Set}
-                shadow
-              />
-            </Link>
-          </div>
-          {/* <div className={styles["sidebar-action"]}>
-            <a href={REPO_URL} target="_blank">
-              <IconButton icon={<GithubIcon />} shadow  />
-            </a>
-          </div> */}
-        </div>
+        </Link>
       </div>
-
       <div
         className={styles["sidebar-drag"]}
         onMouseDown={(e) => onDragMouseDown(e as any)}
