@@ -33,12 +33,12 @@ export default function Login() {
     }
     if (data.code === 604) {
       // 被禁用/过期的操作
-      setIsLogin(false);
-      setTitle(data.msg);
-      return;
+      if (data.msg !== "账号或密码错误") {
+        setIsLogin(false);
+        setTitle(data.msg);
+        return;
+      }
     }
-    console.log(data.code);
-
     alert(data.msg);
   };
   const changePhone = (e: { target: { value: string } }) => {

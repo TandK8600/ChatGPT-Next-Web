@@ -15,7 +15,6 @@ async function handle(
       status: 401,
     });
   }
-
   try {
     return await requestOpenai(req);
   } catch (e) {
