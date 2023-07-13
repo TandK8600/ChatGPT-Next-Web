@@ -9,25 +9,25 @@ interface LoginData {
 
 interface RecordData {
   /** 回答的消息 */
-  answerMessages?: undefined;
+  answerMessages?: Object;
 
   /** 结果花费的token */
   completionTokens?: number;
 
   /** 发送的消息 */
-  messages?: undefined;
+  messages?: string[];
 
   /** 上一条消息返回的id，通过此种方式还原对话，没有父级则为0 */
-  parentId?: string;
+  parentId?: number;
 
   /** 提示语花费的token */
   promptTokens?: number;
 
   /** 完整请求体 */
-  requestBody?: undefined;
+  requestBody?: Object;
 
   /** 完整响应体 */
-  responseBody?: undefined;
+  responseBody?: Object | null;
 
   /** 总共花费的token */
   totalTokens?: number;
@@ -39,6 +39,7 @@ export function LoginApi(data: LoginData) {
     axios
       .post(rootUrl + "/web/user/login", data)
       .then((res) => {
+        localStorage.setItem("loginInfo", JSON.stringify(res));
         resolve(res.data);
       })
       .catch((err) => {
@@ -49,9 +50,13 @@ export function LoginApi(data: LoginData) {
 
 // 记录
 export function RecordApi(data: RecordData) {
+  const loginInfo = localStorage.getItem("loginInfo");
+  const token = JSON.parse(loginInfo || "").data.data.token;
   return new Promise((resolve, reject) => {
     axios
-      .post(rootUrl + "/web/chat", data)
+      .post(rootUrl + "/web/chat", data, {
+        headers: { authorization: `${token}` },
+      })
       .then((res) => {
         resolve(res.data);
       })

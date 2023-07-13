@@ -11,6 +11,7 @@ import { StoreKey } from "../constant";
 import { api, RequestMessage } from "../client/api";
 import { ChatControllerPool } from "../client/controller";
 import { prettyObject } from "../utils/format";
+import { RecordApi } from "../api/user";
 
 export type ChatMessage = RequestMessage & {
   date: string;
@@ -480,6 +481,29 @@ export const useChatStore = create<ChatStore>()(
           modelConfig.compressMessageLengthThreshold,
         );
 
+        // 返回内容之后---对接记录api
+        const parentList = toBeSummarizedMsgs.filter(
+          (item) => item.role === "assistant",
+        );
+        const parmas = {
+          answerMessages: {
+            answerMessages:
+              toBeSummarizedMsgs[toBeSummarizedMsgs.length - 1].content,
+          },
+          messages: [toBeSummarizedMsgs[toBeSummarizedMsgs.length - 2].content],
+          parentId:
+            parentList.length > 0 ? parentList[parentList.length - 1].id : 0,
+          requestBody: JSON.parse(localStorage.getItem("requestPayload") || ""),
+          responseBody: { responseBody: localStorage.getItem("responseText") },
+        };
+        RecordApi(parmas).then((res: any) => {
+          if (res.code === 401) {
+            localStorage.removeItem("Infotoken");
+            alert("token过期,请重新登录");
+            window.location.reload();
+            window.name = "upload";
+          }
+        });
         if (
           historyMsgLength > modelConfig.compressMessageLengthThreshold &&
           modelConfig.sendMemory

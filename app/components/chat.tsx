@@ -527,6 +527,7 @@ export function Chat() {
         session.mask.modelConfig = { ...config.modelConfig };
       }
     });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
