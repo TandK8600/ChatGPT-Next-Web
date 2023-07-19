@@ -113,19 +113,19 @@ function Screen() {
     if (!info) {
       alert("token过期,请重新登录");
       clearInterval(time);
-      window.name === "upload" ? window.location.reload() : null;
+      window.location.reload()
     }
   }, 120000);
 
-  if (window.name !== "upload") {
-    localStorage.removeItem("Infotoken");
-    window.location.reload();
-    window.name = "upload";
-  }
+  // if (window.name !== "upload") {
+  //   localStorage.removeItem("Infotoken");
+  //   window.location.reload();
+  //   window.name = "upload";
+  // }
 
   return (
     <div>
-      {token && window.name === "upload" ? (
+      {token? (
         <div
           className={
             styles.container +

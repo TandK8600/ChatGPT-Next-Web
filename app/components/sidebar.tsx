@@ -125,24 +125,6 @@ export function SideBar(props: { className?: string }) {
           与傻儿子畅聊的快乐时光
         </div>
       </div>
-      {/* 新的聊天 */}
-      <div className={styles["sidebar-header-bar"]}>
-        <IconButton
-          lang={true}
-          icon={<AddIcon />}
-          className={styles["sidebar-bar-button"]}
-          text={shouldNarrow ? undefined : Locale.Home.NewChat}
-          onClick={() => {
-            if (config.dontShowMaskSplashScreen) {
-              chatStore.newSession();
-              navigate(Path.Chat);
-            } else {
-              navigate(Path.NewChat);
-            }
-          }}
-          shadow
-        />
-      </div>
       <div
         className={styles["sidebar-body"]}
         onClick={(e) => {
@@ -153,6 +135,24 @@ export function SideBar(props: { className?: string }) {
       >
         {/* 聊天列表 */}
         <ChatList narrow={shouldNarrow} />
+        {/* 新的聊天 */}
+        <div className={styles["sidebar-header-bar"]}>
+          <IconButton
+            lang={true}
+            icon={<AddIcon />}
+            className={styles["sidebar-bar-button"]}
+            text={shouldNarrow ? undefined : Locale.Home.NewChat}
+            onClick={() => {
+              if (config.dontShowMaskSplashScreen) {
+                chatStore.newSession();
+                navigate(Path.Chat);
+              } else {
+                navigate(Path.NewChat);
+              }
+            }}
+            shadow
+          />
+        </div>
       </div>
       <div className={styles["sidebar-top"]}>
         {/* 面具按钮 */}
@@ -167,7 +167,7 @@ export function SideBar(props: { className?: string }) {
             shadow
           />
         </div>
-        {/* 删除对话 */}
+        {/* 删除对话
         <div className={styles["sidebar-header-bar"]}>
           <IconButton
             icon={<CloseIcon />}
@@ -177,17 +177,27 @@ export function SideBar(props: { className?: string }) {
               if (confirm(Locale.Home.DeleteChat)) {
                 chatStore.deleteSession(chatStore.currentSessionIndex);
               }
-            }}
+            }}1
           />
-        </div>
+        </div> */}
         {/* 设置按钮 */}
-        <Link to={Path.Settings} style={{ textDecoration: "none" }}>
+        {/* <Link to={Path.Settings} style={{ textDecoration: "none" }}>
           <div className={styles["sidebar-header-bar"]}>
             <IconButton
               icon={<SettingsIcon />}
               className={styles["sidebar-bar-button"]}
               lang={true}
-              text={Locale.Home.Set}
+              text={shouldNarrow ? undefined : Locale.Home.Set}
+              shadow
+            />
+          </div>
+        </Link> */}
+        <Link to={Path.Settings} style={{ textDecoration: "none" }}>
+          <div className={styles["sidebar-header-bar"]}>
+            <IconButton
+              icon={<SettingsIcon />}
+              text={shouldNarrow ? undefined : Locale.Home.Set}
+              className={styles["sidebar-bar-button"]}
               shadow
             />
           </div>
