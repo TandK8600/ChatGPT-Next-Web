@@ -99,6 +99,7 @@ html {
 }
 
 body {
+  // background-color: #d7e0e8;
   background-color: var(--gray);
   color: var(--black);
   margin: 0;
@@ -348,9 +349,13 @@ pre {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: var(--border-in-light);
-  box-shadow: var(--card-shadow);
-  border-radius: 10px;
+  // border-left: var(--border-in-light);
+  // border-top: var(--border-in-light);
+  // border-right: var(--border-in-light);
+  // border-bottom: var(--border-in-light);
+  background: transparent;
+  // box-shadow: var(--card-shadow);
+  border-radius: 4px;
 }
 
 .one-line {
