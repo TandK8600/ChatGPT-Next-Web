@@ -7,8 +7,8 @@ import { getBuildConfig } from "./config/build";
 const buildConfig = getBuildConfig();
 
 export const metadata = {
-  title: "地主家的傻儿子，gpt聊天机器人",
-  description: "地主家的傻儿子，gpt聊天机器人",
+  title: "地主家的傻儿子，AI聊天机器人",
+  description: "地主家的傻儿子，AI聊天机器人",
   viewport: {
     width: "device-width",
     initialScale: 1,
@@ -19,7 +19,7 @@ export const metadata = {
     { media: "(prefers-color-scheme: dark)", color: "#151515" },
   ],
   appleWebApp: {
-    title: "地主家的傻儿子，gpt聊天机器人",
+    title: "地主家的傻儿子，AI聊天机器人",
     statusBarStyle: "default",
   },
 };

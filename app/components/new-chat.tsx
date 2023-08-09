@@ -185,11 +185,13 @@ export function NewChat() {
           className={styles["skip"]}
         />
       </div> */}
-      <div className={styles["check"]} onClick={() => navigate(Path.Masks)}>
-        {Locale.NewChat.More}
-      </div>
-      <div className={styles["start"]} onClick={() => startChat()}>
-        {Locale.NewChat.Skip}
+      <div className={styles["middle"]}>
+        <div className={styles["check"]} onClick={() => navigate(Path.Masks)}>
+          {Locale.NewChat.More}
+        </div>
+        <div className={styles["start"]} onClick={() => startChat()}>
+          {Locale.NewChat.Skip}
+        </div>
       </div>
 
       <div className={styles["masks"]} ref={maskRef}>
