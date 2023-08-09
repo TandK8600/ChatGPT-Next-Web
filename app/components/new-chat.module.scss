@@ -6,9 +6,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  left: 50px;
-  top:160px;
+  // position: absolute;
+  // left: 50px;
+  // top:160px;
 
 }
 .start{
@@ -18,10 +18,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: absolute;
-  right: 30px;
-  top:140px
+  margin-left: 20px;
+  // position: absolute;
+  // right: 30px;
+  // top:140px
 }
+
+.middle{
+  display: flex;
+}
+
 .mask-flex{
   display: flex;
   justify-content: center;

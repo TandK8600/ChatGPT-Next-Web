@@ -107,7 +107,7 @@ function Screen() {
   useEffect(() => {
     loadAsyncGoogleFont();
   }, []);
-
+ 
   const time = setInterval(() => {
     const info = localStorage.getItem("Infotoken");
     if (!info) {
