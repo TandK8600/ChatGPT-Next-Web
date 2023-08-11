@@ -23,6 +23,11 @@
 .sidebar-top{
   margin-top: 10px;
 }
+.sidebar-box{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 @media only screen and (min-width: 600px) {
   .tight-container {
@@ -61,6 +66,22 @@
     display: flex;
     align-items: center;
     margin: -2px 0px 10px;
+
+    .sidebar-bar-button {
+      flex-grow: 1;
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
+  .sidebar-header-bars {
+    display: flex;
+    align-items: center;
+    margin: -2px 0px 10px;
+    width: 49%;
+    border-radius: 10px;
+    overflow: hidden;
 
     .sidebar-bar-button {
       flex-grow: 1;

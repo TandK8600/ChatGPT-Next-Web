@@ -10,7 +10,7 @@ const cn = {
     ChatItemCount: (count: number) => `对话数量：${count}条`,
   },
   Chat: {
-    SubTitle: (count: number) => `与 AI聊天机器人 的 ${count} 条对话`,
+    SubTitle: (count: number) => `与 地主家的傻儿子 的 ${count} 条对话`,
     Actions: {
       ChatList: "查看消息列表",
       CompressedHistory: "查看压缩后的历史 Prompt",
@@ -148,7 +148,7 @@ const cn = {
     },
 
     Usage: {
-      Title: "过期时间",
+      Title: "会员到期时间",
       SubTitle(used: any, total: any) {
         return `${total}`;
       },

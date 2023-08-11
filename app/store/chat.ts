@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
 import { trimTopic } from "../utils";
 
 import Locale from "../locales";
@@ -12,6 +11,7 @@ import { api, RequestMessage } from "../client/api";
 import { ChatControllerPool } from "../client/controller";
 import { prettyObject } from "../utils/format";
 import { RecordApi } from "../api/user";
+import { useState } from "react";
 
 export type ChatMessage = RequestMessage & {
   date: string;
@@ -76,6 +76,7 @@ function createEmptySession(): ChatSession {
 }
 
 interface ChatStore {
+  [x: string]: any;
   sessions: ChatSession[];
   currentSessionIndex: number;
   globalId: number;
@@ -89,6 +90,7 @@ interface ChatStore {
   onUserInput: (content: string) => Promise<void>;
   summarizeSession: () => void;
   updateStat: (message: ChatMessage) => void;
+  backType: (code: number) => void;
   updateCurrentSession: (updater: (session: ChatSession) => void) => void;
   updateMessage: (
     sessionIndex: number,
@@ -112,6 +114,8 @@ export const useChatStore = create<ChatStore>()(
       sessions: [createEmptySession()],
       currentSessionIndex: 0,
       globalId: 0,
+      type:0,
+      id:0,
 
       clearSessions() {
         set(() => ({
@@ -223,6 +227,11 @@ export const useChatStore = create<ChatStore>()(
         const session = sessions[index];
 
         return session;
+      },
+      backType(code:number){
+        this.type=code
+        console.log('code',code);
+        
       },
 
       onNewMessage(message) {
@@ -417,7 +426,6 @@ export const useChatStore = create<ChatStore>()(
           session.memoryPrompt = "";
         });
       },
-
       summarizeSession() {
         const session = get().currentSession();
 
@@ -492,17 +500,20 @@ export const useChatStore = create<ChatStore>()(
           },
           messages: [toBeSummarizedMsgs[toBeSummarizedMsgs.length - 2].content],
           parentId:
-            parentList.length > 0 ? parentList[parentList.length - 1].id : 0,
-          requestBody: JSON.parse(localStorage.getItem("requestPayload") || ""),
-          responseBody: { responseBody: localStorage.getItem("responseText") },
+            parentList.length > 1 ? get().id : 0,
+          requestBody:JSON.parse(String(localStorage.getItem("requestPayload"))),
+          responseBody: { responseBody: localStorage.getItem("responseText") }
         };
         RecordApi(parmas).then((res: any) => {
-          if (res.code === 401) {
-            localStorage.removeItem("Infotoken");
-            alert("token过期,请重新登录");
-            window.location.reload();
-            window.name = "upload";
-          }
+          const id = res.msg
+          set(() => ({
+            id: id
+          }));
+        },(err)=>{
+          const data = err.response.status
+          set(() => ({
+            type: data
+          }));
         });
         if (
           historyMsgLength > modelConfig.compressMessageLengthThreshold &&
@@ -576,3 +587,5 @@ export const useChatStore = create<ChatStore>()(
     },
   ),
 );
+
+
