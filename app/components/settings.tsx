@@ -448,7 +448,7 @@ export function Settings() {
           </div>
         </div>
         <div className={styles["edit"]}>
-          <div className={styles["edit-box"]}>
+          {/* <div className={styles["edit-box"]}>
             <div className={styles["edit-box-title"]}>
               {Locale.Settings.Update.Version(currentVersion ?? "unknown")}
             </div>
@@ -472,7 +472,7 @@ export function Settings() {
                 onClick={() => checkUpdate(true)}
               />
             )}
-          </div>
+          </div> */}
           <div className={styles["edit-box"]}>
             <div className={styles["edit-box-title"]}>
               {Locale.Settings.Avatar}

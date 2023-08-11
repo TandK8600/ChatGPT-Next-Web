@@ -3,7 +3,7 @@
 require("../polyfill");
 
 import { useState, useEffect } from "react";
-import Login from "../login";
+import Login from '../login'
 import styles from "./home.module.scss";
 import BotIcon from "../icons/bot.svg";
 import LoadingIcon from "../icons/three-dots.svg";
@@ -22,6 +22,7 @@ import {
 } from "react-router-dom";
 import { SideBar } from "./sidebar";
 import { useAppConfig } from "../store/config";
+import { useChatStore } from "../store/chat";
 
 export function Loading(props: { noLogo?: boolean }) {
   return (
@@ -98,34 +99,28 @@ const loadAsyncGoogleFont = () => {
 };
 
 function Screen() {
+  const chatStore = useChatStore();
   const config = useAppConfig();
   const location = useLocation();
   const isHome = location.pathname === Path.Home;
   const isMobileScreen = useMobileScreen();
-  const token = localStorage.getItem("Infotoken");
-
+  const [code,setCode]= useState(chatStore.type)
+  
   useEffect(() => {
     loadAsyncGoogleFont();
   }, []);
+  useEffect(() => {
+    setCode(chatStore.type)
+  }, [chatStore,chatStore.type]);
 
-  const time = setInterval(() => {
-    const info = localStorage.getItem("Infotoken");
-    if (!info) {
-      alert("token过期,请重新登录");
-      clearInterval(time);
-      window.location.reload()
-    }
-  }, 120000);
-
-  // if (window.name !== "upload") {
-  //   localStorage.removeItem("Infotoken");
-  //   window.location.reload();
-  //   window.name = "upload";
-  // }
+  const changeType = ()=>{
+    chatStore.backType(0)
+    setCode(0)
+  }
 
   return (
     <div>
-      {token? (
+      {code===401?(<Login changeType={changeType}/>):(<div />)}
         <div
           className={
             styles.container +
@@ -148,13 +143,6 @@ function Screen() {
             </Routes>
           </div>
         </div>
-      ) : (
-        <div>
-          <Routes>
-            <Route path={Path.Login} Component={Login} />
-          </Routes>
-        </div>
-      )}
     </div>
   );
 }

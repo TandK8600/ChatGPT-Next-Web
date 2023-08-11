@@ -4,12 +4,13 @@ import styles from "./home.module.scss";
 
 import { IconButton } from "./button";
 import SettingsIcon from "../icons/settings.svg";
+import SendWhiteIcon from "../icons/plugin.svg";
 import GithubIcon from "../icons/github.svg";
 // import ChatGptIcon from "../icons/chatgpt.svg";
 import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/close.svg";
 import MaskIcon from "../icons/mask.svg";
-import PluginIcon from "../icons/plugin.svg";
+import PluginIcon from "../icons/github.svg";
 
 import Locale from "../locales";
 
@@ -110,6 +111,10 @@ export function SideBar(props: { className?: string }) {
   const navigate = useNavigate();
   const config = useAppConfig();
 
+  const FeedBack = (index:number)=>{
+    location.href=index?"https://yunwoooo.feishu.cn/share/base/form/shrcn3DPSvAIomT34VHSMs5Atff":"https://yunwoooo.feishu.cn/share/base/form/shrcnohDkxJQfdagJNnXYRBd1If"
+  }
+
   useHotKey();
 
   return (
@@ -155,6 +160,26 @@ export function SideBar(props: { className?: string }) {
         </div>
       </div>
       <div className={styles["sidebar-top"]}>
+        <div className={styles["sidebar-box"]} >
+        {/* 问题反馈 */}
+          <div className={styles["sidebar-header-bars"]} onClick={()=>FeedBack(0)}>
+            <IconButton
+              icon={<SendWhiteIcon />}
+              text={shouldNarrow ? undefined : '问题反馈'}
+              className={styles["sidebar-bar-button"]}
+              shadow
+            />
+          </div>
+        {/* 产品改进 */}
+          <div className={styles["sidebar-header-bars"]} onClick={()=>FeedBack(1)}>
+            <IconButton
+              icon={<PluginIcon />}
+              text={shouldNarrow ? undefined : '产品改进'}
+              className={styles["sidebar-bar-button"]}
+              shadow
+            />
+          </div>
+          </div>
         {/* 面具按钮 */}
         <div className={styles["sidebar-header-bar"]}>
           <IconButton
@@ -192,6 +217,7 @@ export function SideBar(props: { className?: string }) {
             />
           </div>
         </Link> */}
+        {/* 设置按钮 */}
         <Link to={Path.Settings} style={{ textDecoration: "none" }}>
           <div className={styles["sidebar-header-bar"]}>
             <IconButton

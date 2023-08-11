@@ -1,9 +1,24 @@
+.list{
+  height: 400px;
+  overflow-y: auto;
+}
 .login {
-    min-width: 100vw;
-    min-height: 100vh;
-    background: url("../icons/login_back.jpg");
-    background-size: 100% 100%;
-  
+    width: 100vw;
+    height: 100vh;
+    background-color: red;
+    z-index:99999 !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(109,113,117,0.6);
+    .login-delete{
+      position: absolute;
+      color: #000;
+      right: 20px;
+      rotate: 45deg;
+      font-size: 36px;
+      top: 20px;
+    }
     .login-main {
       position: fixed;
       top: 50%;
@@ -12,13 +27,13 @@
       padding: 40px;
       background: white;
       border-radius: 8px;
-      box-shadow: 6px 12px 60px rgba(0,0,0,0.2);
+      box-shadow: -10px -10px 30px rgba(0,0,0,0.2);
       transform: translate(-50%, -50%);
   
       .logo {
         width: 200px;
         height: 60px;
-        background: url("../icons/logo.png");
+        // background: url("../icons/logo.png");
         background-size: 200px 60px;
       }
   
@@ -47,6 +62,71 @@
             margin-bottom: 10px;
             font-size: 14px;
           }
+          .form-item-get {
+            position: absolute;
+            margin-bottom: 10px;
+            font-size: 14px;
+            right: 0px;
+            top:32px;
+            background-color: #3981f4;
+            padding: 8px 15px;
+            border-radius: 5px;
+          }
+  
+          input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px;
+            padding-right: 100px;
+            border: 1px solid #8c9196;
+            outline-width: 1px;
+            outline-color: #e25227;
+          }
+  
+          .code {
+            position: absolute;
+            right: 20px;
+            bottom: 0;
+            font-size: 14px;
+            color: #3981f4;
+            cursor: pointer;
+            transform: translate(0, -50%);
+          }
+        }
+      }
+      .form-box1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 10px;
+        border: 1px solid grey;
+        padding: 10px;
+        margin-bottom: 10px;
+        .form-buy{
+          color: #3981f4;
+        }
+  
+        .form-item {
+          width: 80%;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          margin-top: 20px;
+  
+          .form-item-title {
+            margin-bottom: 10px;
+            font-size: 14px;
+          }
+          .form-item-get {
+            position: absolute;
+            margin-bottom: 10px;
+            font-size: 14px;
+            right: 0px;
+            top:32px;
+            background-color: #3981f4;
+            padding: 8px 15px;
+            border-radius: 5px;
+          }
   
           input {
             box-sizing: border-box;
@@ -74,13 +154,23 @@
         width: 100%;
         padding: 10px 0;
         margin-top: 30px;
-        margin-bottom: 60px;
+        margin-bottom: 20px;
         font-size: 18px;
         font-weight: bold;
         color: white;
         text-align: center;
         cursor: pointer;
         background: #e25227;
+      }
+      .sign {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        text-align: center;
+        cursor: pointer;
+        background: grey;
       }
     }
   }
