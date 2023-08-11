@@ -5,8 +5,9 @@ require("../polyfill");
 import { useState, useEffect } from "react";
 import Login from "../login";
 import styles from "./home.module.scss";
-import BotIcon from "../icons/bot.svg";
+import BotIcon from "../icons/bot.png";
 import LoadingIcon from "../icons/three-dots.svg";
+import NextImage from "next/image";
 
 import { getCSSVar, useMobileScreen } from "../utils";
 
@@ -26,7 +27,13 @@ import { useAppConfig } from "../store/config";
 export function Loading(props: { noLogo?: boolean }) {
   return (
     <div className={styles["loading-content"] + " no-dark"}>
-      {!props.noLogo && <BotIcon />}
+      {/* {!props.noLogo && <BotIcon />} */}
+      {!props.noLogo && <NextImage
+              src={BotIcon.src}
+              alt="logo"
+              width={50}
+              height={50}
+            />}
       <LoadingIcon />
     </div>
   );
