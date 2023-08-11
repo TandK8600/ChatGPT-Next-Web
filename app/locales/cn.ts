@@ -148,11 +148,7 @@ const cn = {
     },
 
     Usage: {
-<<<<<<< HEAD
       Title: "会员到期时间",
-=======
-      Title: "过期时间",
->>>>>>> 3e37b907ca4b2f895da39d0588c3cda6597e1268
       SubTitle(used: any, total: any) {
         return `${total}`;
       },
