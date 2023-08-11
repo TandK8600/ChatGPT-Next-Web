@@ -39,7 +39,7 @@ const cn = {
     Title: "分享对话",
     Copy: "全部复制",
     Download: "下载文件",
-    Share: "分享到 ShareGPT",
+    Share: "分享",
     MessageFromYou: "来自你的消息",
     MessageFromChatGPT: "来自 AI聊天机器人 的消息",
     Format: {
@@ -148,9 +148,13 @@ const cn = {
     },
 
     Usage: {
+<<<<<<< HEAD
       Title: "会员到期时间",
+=======
+      Title: "过期时间",
+>>>>>>> 3e37b907ca4b2f895da39d0588c3cda6597e1268
       SubTitle(used: any, total: any) {
-        return `本月已使用 $${used}，订阅总额 $${total}`;
+        return `${total}`;
       },
       IsChecking: "正在检查…",
       Check: "重新检查",

@@ -149,3 +149,21 @@ export function RecordApi(data: RecordData) {
       });
   });
 }
+
+// 过期时间
+export function expireApi() {
+  const loginInfo = localStorage.getItem("loginInfo");
+  const token = JSON.parse(loginInfo || "").data.data.token;
+  return new Promise((resolve, reject) => {
+    axios
+      .get(rootUrl + "/web/user/expire-time", {
+        headers: { authorization: `${token}` },
+      })
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
