@@ -8,7 +8,7 @@ import SendWhiteIcon from "../icons/plugin.svg";
 import GithubIcon from "../icons/github.svg";
 // import ChatGptIcon from "../icons/chatgpt.svg";
 import AddIcon from "../icons/add.svg";
-import CloseIcon from "../icons/close.svg";
+import CloseIcon from "../icons/pause.svg";
 import MaskIcon from "../icons/mask.svg";
 import PluginIcon from "../icons/github.svg";
 
@@ -110,6 +110,12 @@ export function SideBar(props: { className?: string }) {
   const { onDragMouseDown, shouldNarrow } = useDragSideBar();
   const navigate = useNavigate();
   const config = useAppConfig();
+
+  const exit = ()=>{
+    if(confirm('是否确认退出登录？')){
+      localStorage.clear()
+    }
+  }
 
   const FeedBack = (index:number)=>{
     location.href=index?"https://yunwoooo.feishu.cn/share/base/form/shrcn3DPSvAIomT34VHSMs5Atff":"https://yunwoooo.feishu.cn/share/base/form/shrcnohDkxJQfdagJNnXYRBd1If"
@@ -228,6 +234,15 @@ export function SideBar(props: { className?: string }) {
             />
           </div>
         </Link>
+        {/* 退出登录 */}
+          <div className={styles["sidebar-header-bar"]} onClick={exit}>
+            <IconButton
+              icon={<CloseIcon />}
+              text={shouldNarrow ? undefined : "退出登录"}
+              className={styles["sidebar-bar-button"]}
+              shadow
+            />
+          </div>
       </div>
       <div
         className={styles["sidebar-drag"]}

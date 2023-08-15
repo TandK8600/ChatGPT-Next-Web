@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { CodeApi, LoginApi,RegisterApi,ListApi,OrderApi } from "./api/user";
+import { useEffect, useState } from "react";
+import { CodeApi, LoginApi,RegisterApi,ListApi,OrderApi, StatusApi } from "./api/user";
 import "./styles/login.scss";
 
 interface Response {
@@ -8,7 +8,9 @@ interface Response {
   data: any | string;
 }
 
-export default function Login({changeType}:any) {
+export default function Login({name}:any) {
+  console.log(name);
+  
   const [formData, setFormData] = useState({ account: "", password: "" });
   const [signData, setSignData] = useState({ account: "",code:"", password1: "",password2: ""});
   const [sign,setSign] = useState(false)
@@ -18,11 +20,37 @@ export default function Login({changeType}:any) {
   const [order,setOrder] = useState(false)
   const [list,setList] = useState([])
   const [form,setForm] = useState(null)
+  const [link,setLink] = useState(false)
+
+  useEffect(()=>{
+    getList()
+  },[])
+
+  const getList =  (async ()=>{
+    let res = (await ListApi()) as Response;
+    if(res.code===200){
+      setList(res.data)
+    }
+  })
+
   const buyOrder =async (id:number)=>{
     let data = (await OrderApi(id)) as Response
     if(data.code===200){
       setOrder(true)
-      setForm(data.msg as any)
+      setForm(data.data.alipayBody as any)
+      // 如果弹窗还在---查询订单是否支付---支付之后关闭弹窗
+      if(name[0]==="buy"){
+        const time = setInterval(async ()=>{
+          let res = (await StatusApi(data.data.orderId)) as any
+          if(res.data==="1"){
+            console.log('执行关闭');
+            clearInterval(time)
+            name[1]()
+            setBuy(false)
+            alert('支付成功')
+          }
+        },1000)
+      }
     }
   }
   const changeSign = ()=>{
@@ -71,7 +99,6 @@ export default function Login({changeType}:any) {
           }
           return count>1?count-1:60
         })
-        console.log(count);
       },1000)
     }
     if(code===604){
@@ -87,33 +114,27 @@ export default function Login({changeType}:any) {
       alert("请填写您的密码");
       return;
     }
-    // 对接
-    const data = (await LoginApi(formData)) as Response;
-    if (data.code === 200) {
-      // 对比时间，如果账号过期
-      let myDate = new Date()
-      let s1 = myDate.getTime()
-      let s2 = new Date(data.data.expireTime.replace(/-/g,'/')).getTime()
-      if(s1>=s2){
-      // 账号过期的操作
-      setBuy(true)
-      localStorage.setItem("temporary", JSON.stringify(data));
-      let res = (await ListApi()) as Response;
-      if(res.code===200){
-        setList(res.data)
-      }
-      alert("您的账号已过期");
-      return
-      }
-      // 登录成功的操作
-      changeType()
-      alert("登录成功");
-      localStorage.setItem("Infotoken", JSON.stringify(data));
-      return;
-    }
-    if (data.code === 604) {
-      alert(data.msg);
-    }
+    // 对接登录
+    LoginApi(formData).then((res: any) => {
+        localStorage.setItem("temporary", JSON.stringify(res));
+        alert("登录成功")
+        name[1]()
+        // 判断是否过期---过期续费---没过期弹窗隐藏
+    },(err)=>{
+      // 未授权
+      console.log("登录失败",err);
+        // 未授权
+        if(err.response.status===401){
+          // 禁用---联系客服页面
+          if(err.response.data.code===403){
+            // 触发改变
+            name[2]("link")
+            setLink(true)
+          }
+          alert(err.response.data.msg)
+          console.log(err.response);
+        }
+    });
    
   };
   const changePhone = (e: { target: { value: string } }) => {
@@ -138,10 +159,10 @@ export default function Login({changeType}:any) {
   return (
 
     <div >
-      {buy?
+      {name[0]==="buy"||buy?
         (<div className="login">
           <div className="login-main">
-          <div className="login-delete" onClick={()=>changeType()}>+</div>
+          <div className="login-delete" onClick={()=>name[1]()}>+</div>
           <div className="login-title">
              <div>充值</div>
              <div></div>
@@ -171,12 +192,21 @@ export default function Login({changeType}:any) {
           </div>
         </div>)
       :
+      name[0]==="link"||link?(
+        <div className="login">
+          <div className="login-main">
+          <div className="login-delete" onClick={()=>name[1]()}>+</div>
+          <div className="login-title">联系客服</div>
+          <div  className="login-img"></div>
+          </div>
+        </div>
+      ):
         (
           <div className="login">
             {
               sign?(
                 <div className="login-main">
-       <div className="login-delete" onClick={()=>changeType()}>+</div>
+       <div className="login-delete" onClick={()=>name[1]()}>+</div>
         <div className="login-title">
           <div>注册</div>
           <div></div>
@@ -189,6 +219,7 @@ export default function Login({changeType}:any) {
               onChange={changeAccount}
               value={signData.account}
               placeholder="请输入账号"
+              className="form-item-input"
             />
             <div className="form-item-get" onClick={getCode}>{count===60?'获取验证码':count+'s后重试'}</div>
           </div>
@@ -198,6 +229,7 @@ export default function Login({changeType}:any) {
               type="text"
               onChange={changeCode}
               value={signData.code}
+              className="form-item-input"
               placeholder="请输入验证码"
             />
             <div className="code"></div>
@@ -225,14 +257,15 @@ export default function Login({changeType}:any) {
           <div className="submit" onClick={signAccount}>
           注册
         </div>
-        <div className="sign" onClick={changeSign}>
-            登录
-          </div>
+        <div className="addtional">
+          <span >已有账号？</span>
+          <span className="addtional-active" onClick={changeSign}>去登录</span>
+        </div>
         </div>
       </div>
               ):(
                 <div className="login-main">
-          <div className="login-delete" onClick={()=>changeType()}>+</div>
+          <div className="login-delete" onClick={()=>name[1]()}>+</div>
           <div className="login-title">
              <div>登录</div>
              <div></div>
@@ -245,6 +278,7 @@ export default function Login({changeType}:any) {
                 onChange={changePhone}
                 value={formData.account}
                 placeholder="请输入账号"
+                className="form-item-input"
               />
             </div>
             <div className="form-item">
@@ -254,6 +288,7 @@ export default function Login({changeType}:any) {
                 onChange={changePassword}
                 value={formData.password}
                 placeholder="请输入密码"
+                className="form-item-input"
               />
               <div className="code"></div>
             </div>
@@ -261,9 +296,10 @@ export default function Login({changeType}:any) {
           <div className="submit" onClick={submit}>
             登录
           </div>
-          <div className="sign" onClick={changeSign}>
-            注册
-          </div>
+           <div className="addtional">
+          <span>还没有账号？</span>
+          <span className="addtional-active" onClick={changeSign}>去注册</span>
+        </div>
         </div>
               )
             }
