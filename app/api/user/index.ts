@@ -118,6 +118,23 @@ export function OrderApi(setMealId:number) {
   });
 }
 
+// 查看订单状态
+export function StatusApi(orderId:number) {
+  const temporary = localStorage.getItem("temporary");
+  const token =temporary?JSON.parse(temporary).data.token:'';
+  return new Promise((resolve, reject) => {
+    axios
+      .get(rootUrl + `/web/user/order/${orderId}`
+      )
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 // 注册
 export function RegisterApi(data:RegisterData) {
   return new Promise((resolve, reject) => {

@@ -124,11 +124,13 @@ function Screen() {
     chatStore.backType(0)
     setCode(0)
   }
-
+  const changePupType = (text:string)=>{
+    chatStore.changePupType(text)
+  }
 
   return (
     <div>
-      {code===401?(<Login changeType={changeType}/>):(<div />)}
+      {code===401?(<Login name={[chatStore.pupType,changeType,changePupType]} />):(<div />)}
         <div
           className={
             styles.container +
