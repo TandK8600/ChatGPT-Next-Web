@@ -100,6 +100,24 @@ export function ListApi() {
   });
 }
 
+// 获取账号状态
+export function AccountApi() {
+  const temporary = localStorage.getItem("temporary");
+  const token =temporary?JSON.parse(temporary).data.token:'';
+  return new Promise((resolve, reject) => {
+    axios
+      .get(rootUrl + "/web/user/verify",{
+        headers: { authorization: `${token}` }
+      })
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 // 生成订单
 export function OrderApi(setMealId:number) {
   const temporary = localStorage.getItem("temporary");
