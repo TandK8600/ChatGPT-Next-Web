@@ -9,8 +9,6 @@ interface Response {
 }
 
 export default function Login({name}:any) {
-  console.log(name);
-  
   const [formData, setFormData] = useState({ account: "", password: "" });
   const [signData, setSignData] = useState({ account: "",code:"", password1: "",password2: ""});
   const [sign,setSign] = useState(false)
@@ -21,6 +19,7 @@ export default function Login({name}:any) {
   const [list,setList] = useState([])
   const [form,setForm] = useState(null)
   const [link,setLink] = useState(false)
+  const [info,setInfo] = useState({})
 
   useEffect(()=>{
     getList()
@@ -34,6 +33,7 @@ export default function Login({name}:any) {
   })
 
   const buyOrder =async (id:number)=>{
+    setInfo(list.filter((item:{name:string,content:string,price:string,setMealId:number})=>item.setMealId===id))
     let data = (await OrderApi(id)) as Response
     if(data.code===200){
       setOrder(true)
@@ -43,7 +43,6 @@ export default function Login({name}:any) {
         const time = setInterval(async ()=>{
           let res = (await StatusApi(data.data.orderId)) as any
           if(res.data==="1"){
-            console.log('执行关闭');
             clearInterval(time)
             name[1]()
             setBuy(false)
@@ -119,6 +118,7 @@ export default function Login({name}:any) {
         localStorage.setItem("temporary", JSON.stringify(res));
         alert("登录成功")
         name[1]()
+        name[3](false)
         // 判断是否过期---过期续费---没过期弹窗隐藏
     },(err)=>{
       // 未授权
@@ -170,17 +170,20 @@ export default function Login({name}:any) {
           {
             order?(
               <div>
+                <div className="iframe">
                 <iframe srcDoc={form as any} width={205} height={205}></iframe>
+                </div>
               </div>
             ):(
               <div className="list">
               {
                 list.map((item:{name:string,content:string,price:string,setMealId:number})=>(
-              <div className="form-box1" key={item.setMealId}>
+             
+              <div key={item.setMealId} className="form-box1" >
                <div className="form-item">
-                <div className="form-item-title">套餐名称：<span>{item.name}</span></div>
-                <div className="form-item-title">套餐内容：<span>{item.content}</span></div>
-                <div className="form-item-title">套餐价格：<span>{item.price}</span></div>
+                <div className="form-item-title"><span className="name">{item.name}</span></div>
+                <div className="form-item-title">介绍：<span>{item.content}</span></div>
+                <div className="form-item-title">价格：<span className="price">￥{item.price}</span></div>
               </div>
               <div className="form-buy" onClick={()=>buyOrder(item.setMealId)}>购买</div>
               </div>

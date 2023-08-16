@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import styles from "./home.module.scss";
 
@@ -28,6 +28,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
 import { showToast } from "./ui-lib";
+import { TRUE } from "sass";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -103,8 +104,11 @@ function useDragSideBar() {
   };
 }
 
-export function SideBar(props: { className?: string }) {
+export function SideBar(props: { className?: string,name?:any }) {
+  console.log(props);
+  
   const chatStore = useChatStore();
+  const [isLoginText,setLogin]= useState('初始值')
 
   // drag side bar
   const { onDragMouseDown, shouldNarrow } = useDragSideBar();
@@ -113,8 +117,19 @@ export function SideBar(props: { className?: string }) {
 
   const exit = ()=>{
     if(confirm('是否确认退出登录？')){
-      localStorage.clear()
+      alert('已退出登录！')
+      setTimeout(()=>{
+        localStorage.clear()
+      props.name(true)
+      setLogin(''+localStorage.getItem('loginInfo'))
+      console.log(!!isLoginText);
+      },500)
     }
+  }
+
+  const pupLogin = ()=>{
+    chatStore.changePupType('login')
+    props.name(true)
   }
 
   const FeedBack = (index:number)=>{
@@ -234,8 +249,19 @@ export function SideBar(props: { className?: string }) {
             />
           </div>
         </Link>
-        {/* 退出登录 */}
-          <div className={styles["sidebar-header-bar"]} onClick={exit}>
+        {/* 登录/退出登录 */}
+        {
+          chatStore.login!=='false'&&isLoginText?(
+            <div className={styles["sidebar-header-bar"]} onClick={pupLogin}>
+            <IconButton
+              icon={<CloseIcon />}
+              text={shouldNarrow ? undefined : "登录"}
+              className={styles["sidebar-bar-button"]}
+              shadow
+            />
+          </div>
+          ):(
+            <div className={styles["sidebar-header-bar"]} onClick={exit}>
             <IconButton
               icon={<CloseIcon />}
               text={shouldNarrow ? undefined : "退出登录"}
@@ -243,6 +269,9 @@ export function SideBar(props: { className?: string }) {
               shadow
             />
           </div>
+          )
+        }
+          
       </div>
       <div
         className={styles["sidebar-drag"]}

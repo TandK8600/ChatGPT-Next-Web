@@ -91,7 +91,9 @@ interface ChatStore {
   summarizeSession: () => void;
   updateStat: (message: ChatMessage) => void;
   backType: (code: number) => void;
+  changeTheme: (type: string) => void;
   changePupType: (type: string) => void;
+  changeLogin: (type: string) => void;
   updateCurrentSession: (updater: (session: ChatSession) => void) => void;
   updateMessage: (
     sessionIndex: number,
@@ -118,6 +120,8 @@ export const useChatStore = create<ChatStore>()(
       type:0,
       id:0,
       pupType:'login',
+      login:true,
+      theme:'',
 
       clearSessions() {
         set(() => ({
@@ -238,6 +242,14 @@ export const useChatStore = create<ChatStore>()(
       changePupType(type:string){
         this.pupType=type
         console.log('pupType',type);
+      },
+      changeLogin(type:string){
+        this.login=type
+        console.log('login',type);
+      },
+      changeTheme(type:string){
+        this.theme=type
+        console.log('theme',type);
       },
 
       onNewMessage(message) {
@@ -507,6 +519,7 @@ export const useChatStore = create<ChatStore>()(
           messages: [toBeSummarizedMsgs[toBeSummarizedMsgs.length - 2].content],
           parentId:
             parentList.length > 1 ? get().id : 0,
+          theme:this.theme,
           requestBody:JSON.parse(String(localStorage.getItem("requestPayload"))),
           responseBody: { responseBody: localStorage.getItem("responseText") }
         };

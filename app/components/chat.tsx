@@ -61,6 +61,7 @@ import { useMaskStore } from "../store/mask";
 import { useCommand } from "../command";
 import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
+import { AccountApi } from "../api/user";
 
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
@@ -402,7 +403,9 @@ export function ChatActions(props: {
   );
 }
 
-export function Chat() {
+export function Chat(props:any) {
+  console.log(props);
+  
 
   type RenderMessage = ChatMessage & { preview?: boolean };
 
@@ -489,14 +492,38 @@ export function Chat() {
   };
 
   const doSubmit = (userInput: string) => {
-    if (userInput.trim() === "") return;
-    setIsLoading(true);
-    chatStore.onUserInput(userInput).then(() => setIsLoading(false));
-    localStorage.setItem(LAST_INPUT_KEY, userInput);
-    setUserInput("");
-    setPromptHints([]);
-    if (!isMobileScreen) inputRef.current?.focus();
-    setAutoScroll(true);
+    console.log(props);
+    // 没有token
+    if(!localStorage.getItem('loginInfo')){
+      alert('请先登录再发送消息')
+      // 登录弹窗
+      chatStore.changePupType('login')
+      chatStore.backType(401)
+      props.name(true)
+      return
+    }
+    // 查询状态
+    AccountApi().then((res)=>{
+      // 存储主题
+      chatStore.changeTheme(!session.topic ? DEFAULT_TOPIC : session.topic)
+      // 成功的步骤
+      if (userInput.trim() === "") return;
+      setIsLoading(true);
+      chatStore.onUserInput(userInput).then(() => setIsLoading(false));
+      localStorage.setItem(LAST_INPUT_KEY, userInput);
+      setUserInput("");
+      setPromptHints([]);
+      if (!isMobileScreen) inputRef.current?.focus();
+      setAutoScroll(true);
+     }).catch((err)=>{
+      if(err.response.status===401){
+        // 请充值
+        if(err.response.data.code===402){
+          alert(err.response.data.msg)
+          props.name(true,402)
+        }
+      }  
+     })   
   };
 
   // stop response
