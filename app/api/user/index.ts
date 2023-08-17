@@ -84,8 +84,6 @@ export function CodeApi( params: accountType) {
 export function ListApi() {
   const temporary = localStorage.getItem("temporary");
   const token =temporary?JSON.parse(temporary).data.token:'';
-  console.log(temporary,token);
-  
   return new Promise((resolve, reject) => {
     axios
       .get(rootUrl + "/web/user/set-meal-list",{

@@ -3,6 +3,48 @@
   justify-content: center;
   align-items: center;
 }
+.top{
+  width: 100%;
+}
+.pay{
+  .pay-introduce{
+    max-width: 224px;
+  }
+  .pay-title{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .pay-flex{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  .pay-price{
+    text-align: right;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+  .pay-money{
+    color: #e25227;
+  }
+  .pay-select{
+    border: 1px solid grey;
+    border-radius: 6px;
+    padding: 5px 15px;
+    margin: auto;
+    width: 80%;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .pay-pup{
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    margin-right: 6px;
+  }
+}
+
 .price{
   color: #e25227;
 }
@@ -16,6 +58,7 @@
   overflow-y: auto;
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   flex-wrap: wrap;
 }
 .addtional{
@@ -129,9 +172,6 @@
         }
       }
       .form-box1 {
-        // display: flex;
-        // justify-content: space-between;
-        // align-items: center;
         background-color: #eee;
         border-radius: 0 1.2rem 0rem 1.2rem;
         margin-right: 0.5rem;
