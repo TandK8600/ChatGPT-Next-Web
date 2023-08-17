@@ -49,8 +49,8 @@ export default function Login({name}:any) {
             alert('支付成功')
           }
           if(localStorage.getItem('stop')==='true'){
-            clearInterval(time)
             localStorage.setItem('stop','false')
+            clearInterval(time)
           }
         },1000)
       }
@@ -59,9 +59,15 @@ export default function Login({name}:any) {
   const closePup =()=>{
     name[1]()
     localStorage.setItem('stop','true')
+    setTimeout(()=>{
+      localStorage.setItem('stop','false')
+    },1000)
   }
   const selectOther = ()=>{
     localStorage.setItem('stop','true')
+    setTimeout(()=>{
+      localStorage.setItem('stop','false')
+    },1000)
     setOrder(false)
   }
   const changeSign = ()=>{
