@@ -19,7 +19,7 @@ export default function Login({name}:any) {
   const [list,setList] = useState([])
   const [form,setForm] = useState(null)
   const [link,setLink] = useState(false)
-  const [info,setInfo] = useState({})
+  const [info,setInfo] = useState({name:'',content:'',price:''})
 
   useEffect(()=>{
     getList()
@@ -32,8 +32,8 @@ export default function Login({name}:any) {
     }
   })
 
-  const buyOrder =async (id:number)=>{
-    setInfo(list.filter((item:{name:string,content:string,price:string,setMealId:number})=>item.setMealId===id))
+  const buyOrder =async (id:number,item:any)=>{
+    setInfo(item)
     let data = (await OrderApi(id)) as Response
     if(data.code===200){
       setOrder(true)
@@ -48,9 +48,21 @@ export default function Login({name}:any) {
             setBuy(false)
             alert('支付成功')
           }
+          if(localStorage.getItem('stop')==='true'){
+            clearInterval(time)
+            localStorage.setItem('stop','false')
+          }
         },1000)
       }
     }
+  }
+  const closePup =()=>{
+    name[1]()
+    localStorage.setItem('stop','true')
+  }
+  const selectOther = ()=>{
+    localStorage.setItem('stop','true')
+    setOrder(false)
   }
   const changeSign = ()=>{
     sign?setSign(false):setSign(true)
@@ -125,6 +137,12 @@ export default function Login({name}:any) {
       console.log("登录失败",err);
         // 未授权
         if(err.response.status===401){
+          // 未授权
+          if(err.response.data.code===401){
+            // 触发改变
+            name[2]("login")
+            setLink(true)
+          }
           // 禁用---联系客服页面
           if(err.response.data.code===403){
             // 触发改变
@@ -162,30 +180,45 @@ export default function Login({name}:any) {
       {name[0]==="buy"||buy?
         (<div className="login">
           <div className="login-main">
-          <div className="login-delete" onClick={()=>name[1]()}>+</div>
+          <div className="login-delete" onClick={closePup}>+</div>
           <div className="login-title">
              <div>充值</div>
              <div></div>
           </div>
           {
             order?(
-              <div>
-                <div className="iframe">
-                <iframe srcDoc={form as any} width={205} height={205}></iframe>
+              <div className="pay">
+                <div className="pay-title">套餐详情</div>
+                <hr />
+                <div className="pay-flex">
+                  <div>套餐名称</div>
+                  <div className="pay-introduce">{info.name}</div>
                 </div>
+                <div className="pay-flex">
+                  <div>套餐介绍</div>
+                  <div className="pay-introduce">{info.content}</div>
+                </div>
+                <hr />
+                <div className="pay-price">价格
+                  <i className="pay-money">￥{info.price}</i>
+                </div>
+                <div className="iframe">
+                <iframe frameBorder="no" srcDoc={form as any} width={205} height={205}></iframe>
+                </div>
+                <div className="pay-pup">打开手机支付宝  扫一扫进行付款</div>
+                <div className="pay-select" onClick={selectOther}>选择其他套餐</div>
               </div>
             ):(
               <div className="list">
               {
                 list.map((item:{name:string,content:string,price:string,setMealId:number})=>(
-             
               <div key={item.setMealId} className="form-box1" >
                <div className="form-item">
                 <div className="form-item-title"><span className="name">{item.name}</span></div>
                 <div className="form-item-title">介绍：<span>{item.content}</span></div>
                 <div className="form-item-title">价格：<span className="price">￥{item.price}</span></div>
               </div>
-              <div className="form-buy" onClick={()=>buyOrder(item.setMealId)}>购买</div>
+              <div className="form-buy" onClick={()=>buyOrder(item.setMealId,item)}>购买</div>
               </div>
                 ))
               }
@@ -310,5 +343,5 @@ export default function Login({name}:any) {
         )
       }
     </div>
-  );
+  )
 }

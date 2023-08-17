@@ -6,7 +6,7 @@ import { IconButton } from "./button";
 import SettingsIcon from "../icons/settings.svg";
 import SendWhiteIcon from "../icons/plugin.svg";
 import GithubIcon from "../icons/github.svg";
-// import ChatGptIcon from "../icons/chatgpt.svg";
+import ChatGptIcon from "../icons/brain.svg";
 import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/pause.svg";
 import MaskIcon from "../icons/mask.svg";
@@ -120,15 +120,24 @@ export function SideBar(props: { className?: string,name?:any }) {
       alert('已退出登录！')
       setTimeout(()=>{
         localStorage.clear()
-      props.name(true)
+      pupLogin()
       setLogin(''+localStorage.getItem('loginInfo'))
-      console.log(!!isLoginText);
       },500)
     }
   }
 
   const pupLogin = ()=>{
     chatStore.changePupType('login')
+    props.name(true)
+  }
+  const pupBuy = ()=>{
+    if(!localStorage.getItem("loginInfo")){
+      alert('请先登录账号再充值')
+      chatStore.changePupType('login')
+    }
+    else{
+      chatStore.changePupType('buy')
+    }
     props.name(true)
   }
 
@@ -249,9 +258,18 @@ export function SideBar(props: { className?: string,name?:any }) {
             />
           </div>
         </Link>
+        {/* 充值按钮 */}
+        <div className={styles["sidebar-header-bar"]} onClick={pupBuy}>
+            <IconButton
+              icon={<ChatGptIcon />}
+              text={shouldNarrow ? undefined : "充值"}
+              className={styles["sidebar-bar-button"]}
+              shadow
+            />
+          </div>
         {/* 登录/退出登录 */}
         {
-          chatStore.login!=='false'&&isLoginText?(
+          chatStore.login!=='false'&&isLoginText&&!localStorage.getItem('loginInfo')?(
             <div className={styles["sidebar-header-bar"]} onClick={pupLogin}>
             <IconButton
               icon={<CloseIcon />}
