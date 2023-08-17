@@ -105,8 +105,6 @@ function useDragSideBar() {
 }
 
 export function SideBar(props: { className?: string,name?:any }) {
-  console.log(props);
-  
   const chatStore = useChatStore();
   const [isLoginText,setLogin]= useState('初始值')
 

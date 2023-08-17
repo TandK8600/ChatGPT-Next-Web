@@ -236,20 +236,16 @@ export const useChatStore = create<ChatStore>()(
       },
       backType(code:number){
         this.type=code
-        console.log('code',code);
         
       },
       changePupType(type:string){
         this.pupType=type
-        console.log('pupType',type);
       },
       changeLogin(type:string){
         this.login=type
-        console.log('login',type);
       },
       changeTheme(type:string){
         this.theme=type
-        console.log('theme',type);
       },
 
       onNewMessage(message) {
@@ -550,7 +546,6 @@ export const useChatStore = create<ChatStore>()(
               }));
             }
             alert(err.response.data.msg)
-            console.log(err.response);
             
           }
           const data = err.response.status

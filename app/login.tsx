@@ -133,8 +133,6 @@ export default function Login({name}:any) {
         name[3](false)
         // 判断是否过期---过期续费---没过期弹窗隐藏
     },(err)=>{
-      // 未授权
-      console.log("登录失败",err);
         // 未授权
         if(err.response.status===401){
           // 未授权
@@ -150,7 +148,6 @@ export default function Login({name}:any) {
             setLink(true)
           }
           alert(err.response.data.msg)
-          console.log(err.response);
         }
     });
    

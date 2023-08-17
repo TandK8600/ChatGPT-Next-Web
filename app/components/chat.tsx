@@ -404,9 +404,6 @@ export function ChatActions(props: {
 }
 
 export function Chat(props:any) {
-  console.log(props);
-  
-
   type RenderMessage = ChatMessage & { preview?: boolean };
 
   const chatStore = useChatStore();
@@ -492,7 +489,6 @@ export function Chat(props:any) {
   };
 
   const doSubmit = (userInput: string) => {
-    console.log(props);
     // 没有token
     if(!localStorage.getItem('loginInfo')){
       alert('请先登录再发送消息')
