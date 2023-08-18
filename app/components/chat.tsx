@@ -518,6 +518,12 @@ export function Chat(props:any) {
           alert(err.response.data.msg)
           props.name(true,402)
         }
+        // 请登录
+        if(err.response.data.code===401){
+          alert(err.response.data.msg)
+          props.name(true,401)
+          localStorage.clear()
+        }
       }  
      })   
   };
