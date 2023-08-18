@@ -20,7 +20,6 @@ export default function Login({name}:any) {
   const [form,setForm] = useState(null)
   const [link,setLink] = useState(false)
   const [info,setInfo] = useState({name:'',content:'',price:''})
-  const [forget,setForget] = useState(false)
 
   useEffect(()=>{
     getList()
@@ -74,9 +73,7 @@ export default function Login({name}:any) {
   const changeSign = ()=>{
     sign?setSign(false):setSign(true)
   }
-  const setForgetType = ()=>{
-    setForget(true)
-  }
+
 
   const signAccount =async ()=>{
     // 判空
@@ -192,7 +189,6 @@ export default function Login({name}:any) {
   };
 
   return (
-
     <div >
       {name[0]==="buy"||buy?
         (<div className="login">
@@ -342,7 +338,6 @@ export default function Login({name}:any) {
                 value={formData.password}
                 placeholder="请输入密码"
                 className="form-item-input"
-                onClick={keyDown(event)}
               />
               <div className="code"></div>
             </div>
