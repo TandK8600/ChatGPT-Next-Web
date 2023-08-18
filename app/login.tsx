@@ -257,7 +257,7 @@ export default function Login({name}:any) {
               type="text"
               onChange={changeAccount}
               value={signData.account}
-              placeholder="请输入账号"
+              placeholder="请输入手机号"
               className="form-item-input"
             />
             <div className="form-item-get" onClick={getCode}>{count===60?'获取验证码':count+'s后重试'}</div>
