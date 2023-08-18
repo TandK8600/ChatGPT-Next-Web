@@ -20,6 +20,7 @@ export default function Login({name}:any) {
   const [form,setForm] = useState(null)
   const [link,setLink] = useState(false)
   const [info,setInfo] = useState({name:'',content:'',price:''})
+  const [forget,setForget] = useState(false)
 
   useEffect(()=>{
     getList()
@@ -73,6 +74,9 @@ export default function Login({name}:any) {
   const changeSign = ()=>{
     sign?setSign(false):setSign(true)
   }
+  const setForgetType = ()=>{
+    setForget(true)
+  }
 
   const signAccount =async ()=>{
     // 判空
@@ -88,7 +92,7 @@ export default function Login({name}:any) {
     // 提交
     const {code,data} = (await RegisterApi({'account':signData.account,'code':signData.code,'codeId':codeId,'password':signData.password2})) as Response;
     if(code===200){
-      alert("注册成功，去登录")
+      alert("恭喜您，成功注册！现在您可以免费试用一天")
       setSign(false)
     }
     else{
@@ -133,11 +137,16 @@ export default function Login({name}:any) {
     }
     // 对接登录
     LoginApi(formData).then((res: any) => {
+       console.log(res);
+       if(res.code===604){
+        alert(res.msg)
+       }
+       if(res.code===200){
         localStorage.setItem("temporary", JSON.stringify(res));
-        alert("登录成功")
+        alert('登录成功')
         name[1]()
         name[3](false)
-        // 判断是否过期---过期续费---没过期弹窗隐藏
+       }
     },(err)=>{
         // 未授权
         if(err.response.status===401){
@@ -158,6 +167,11 @@ export default function Login({name}:any) {
     });
    
   };
+  const keyDown =(e:any)=>{
+      if(e.which==13){
+        console.log('调用登录');
+      }
+  }
   const changePhone = (e: { target: { value: string } }) => {
     setFormData({ account: e.target.value, password: formData.password });
   };
@@ -328,10 +342,12 @@ export default function Login({name}:any) {
                 value={formData.password}
                 placeholder="请输入密码"
                 className="form-item-input"
+                onClick={keyDown(event)}
               />
               <div className="code"></div>
             </div>
           </div>
+          {/* <div className="forget" onClick={setForgetType}>忘记密码</div> */}
           <div className="submit" onClick={submit}>
             登录
           </div>
