@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { Tooltip } from 'antd';
 import styles from "./button.module.scss";
 
 export function IconButton(props: {
@@ -13,8 +13,10 @@ export function IconButton(props: {
   title?: string;
   disabled?: boolean;
   lang?: boolean;
+  tool?:string
 }) {
   return (
+    <Tooltip title={props.tool}>
     <button
       className={
         styles[props.lang ? "icon-button-append" : "icon-button"] +
@@ -42,5 +44,6 @@ export function IconButton(props: {
         <div className={styles["icon-button-text"]}>{props.text}</div>
       )}
     </button>
+    </Tooltip>
   );
 }

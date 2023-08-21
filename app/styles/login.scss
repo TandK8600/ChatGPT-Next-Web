@@ -3,13 +3,35 @@
   justify-content: center;
   align-items: center;
 }
+.open-img{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  top: 41px;
+  background: url('../icons/open-eye.png');
+  background-size: cover;
+  cursor: pointer;
+}
+.close-img{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  top: 41px;
+  background: url('../icons/close-eye.png');
+  background-size: cover;
+  cursor: pointer;
+}
 .top{
   width: 100%;
 }
 .forget{
   text-align: end;
-  color: brown;
+  color:#e25227;
   margin-top: 10px;
+  cursor: pointer;
+  font-size: 14px;
 }
 .pay{
   .pay-introduce{
@@ -149,12 +171,11 @@
           .form-item-get {
             position: absolute;
             margin-bottom: 10px;
-            font-size: 14px;
             right: 3px;
             top:32.5px;
-            background-color: #3981f4;
+            border-left: 1px solid #ccc;
             padding: 8px 15px;
-            border-radius: 5px;
+            font-size: 14px;
             cursor: pointer;
           }
   
@@ -187,7 +208,7 @@
         padding: 10px;
         margin-bottom: 20px;
         margin-top: 10px;
-        width: 40%;
+        width: 42%;
         .form-buy{
           background-color:skyblue;
           color: #fefefe;
@@ -213,9 +234,9 @@
             font-size: 14px;
             right: 3px;
             top:32.5px;
-            background-color: #3981f4;
             padding: 8px 15px;
             border-radius: 5px;
+            border-left: 1px solid #000;
           }
   
           input {
