@@ -358,7 +358,9 @@ export default function Login({name}:any) {
         <div className="login-title1">注册成功</div>
         <div className="login-text">恭喜您获得1天会员免费试用！</div>
         <div className="login-text">快去体验吧！</div>
-        <div className="login-button" onClick={()=>name[1]()}>立即体验</div>
+        <div className="submit" onClick={()=>{name[1]();setTotast(false)}}>
+          立即体验
+        </div>
       </div>
       </div>
               ):(
