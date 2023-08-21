@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from "react";
 
 import styles from "./home.module.scss";
 
+import { Statistic } from 'antd';
+const { Countdown } = Statistic;
+
 import { IconButton } from "./button";
 import SettingsIcon from "../icons/settings.svg";
 import SendWhiteIcon from "../icons/plugin.svg";
@@ -12,9 +15,11 @@ import CloseIcon from "../icons/pause.svg";
 import MaskIcon from "../icons/mask.svg";
 import PluginIcon from "../icons/github.svg";
 
+import { expireApi } from '../api/user/index';
+
 import Locale from "../locales";
 
-import { useAppConfig, useChatStore } from "../store";
+import { Theme, useAppConfig, useChatStore } from "../store";
 
 import {
   MAX_SIDEBAR_WIDTH,
@@ -141,6 +146,18 @@ export function SideBar(props: { className?: string,name?:any }) {
     location.href=index?"https://yunwoooo.feishu.cn/share/base/form/shrcn3DPSvAIomT34VHSMs5Atff":"https://yunwoooo.feishu.cn/share/base/form/shrcnohDkxJQfdagJNnXYRBd1If"
   }
 
+  
+  async function useExpireTime(){
+    const chatStore = useChatStore();
+    const loginInfo = localStorage.getItem("loginInfo")
+    if(loginInfo){
+      const data:any = await expireApi()
+      chatStore.expireTime = data.data
+      console.log(chatStore.expireTime)
+    }
+  }
+
+  useExpireTime();
   useHotKey();
 
   return (
@@ -254,6 +271,10 @@ export function SideBar(props: { className?: string,name?:any }) {
             />
           </div>
         </Link>
+        {/* 倒计时 */}
+        {new Date(chatStore.expireTime).getTime() - Date.now() < (1000 * 60 * 60 * 24  + 1000 * 30) && ( 
+          <div className={styles["sidebar-countdown"]}>付费时间余额 <Countdown  className={styles["sidebar-countdown-count"]} value={new Date(chatStore.expireTime).getTime()} valueStyle={{ color: config.theme == Theme.Dark ? '#bbbbbb' : '#303030' }}/></div>
+          )} 
         {/* 充值按钮 */}
         <div className={styles["sidebar-header-bar"]} onClick={pupBuy}>
             <IconButton
@@ -263,6 +284,7 @@ export function SideBar(props: { className?: string,name?:any }) {
               shadow
             />
           </div>
+          
         {/* 登录/退出登录 */}
         {
           chatStore.login!=='false'&&isLoginText&&!localStorage.getItem('loginInfo')?(
