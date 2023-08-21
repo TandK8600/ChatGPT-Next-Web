@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { CodeApi, LoginApi,RegisterApi,ListApi,OrderApi, StatusApi } from "./api/user";
+import { CodeApi, LoginApi,RegisterApi,ListApi,OrderApi, StatusApi,RenameApi } from "./api/user";
 import "./styles/login.scss";
+
 
 interface Response {
   code: number;
@@ -20,6 +21,9 @@ export default function Login({name}:any) {
   const [form,setForm] = useState(null)
   const [link,setLink] = useState(false)
   const [info,setInfo] = useState({name:'',content:'',price:''})
+  const [isShow1,setShow1]= useState(false)
+  const [isShow2,setShow2]= useState(false)
+  const [isBack,setIsBack]= useState(false)
 
   useEffect(()=>{
     getList()
@@ -31,6 +35,12 @@ export default function Login({name}:any) {
       setList(res.data)
     }
   })
+
+  const onKeyup = (e:any)=>{
+    if(e.keyCode===13){
+      submit()
+    }
+  }
 
   const buyOrder =async (id:number,item:any)=>{
     setInfo(item)
@@ -71,9 +81,37 @@ export default function Login({name}:any) {
     setOrder(false)
   }
   const changeSign = ()=>{
+    setIsBack(false)
     sign?setSign(false):setSign(true)
   }
 
+  const setForgetType = ()=>{
+    setIsBack(true)
+    sign?setSign(false):setSign(true)
+  }
+
+  const setBackPassword =async ()=>{
+     // 判空
+     if(!signData.account||!signData.code||!signData.password1||!signData.password2){
+      alert("请将信息填写完整")
+      return
+    }
+    // 判两次密码
+    if(signData.password1!==signData.password2){
+      alert("两次密码不一致")
+      return
+    }
+    // 提交
+    const {code,data} = (await RenameApi({'account':signData.account,'code':signData.code,'codeId':codeId,'password':signData.password2})) as Response;
+    if(code===200){
+      alert("已重置密码！请前往登录")
+      setSignData({ account: "",code:"", password1: "",password2: ""})
+      setSign(false)
+    }
+    else{
+      alert(data)
+    }
+  }
 
   const signAccount =async ()=>{
     // 判空
@@ -90,6 +128,7 @@ export default function Login({name}:any) {
     const {code,data} = (await RegisterApi({'account':signData.account,'code':signData.code,'codeId':codeId,'password':signData.password2})) as Response;
     if(code===200){
       alert("恭喜您，成功注册！现在您可以免费试用一天")
+      setSignData({ account: "",code:"", password1: "",password2: ""})
       setSign(false)
     }
     else{
@@ -164,11 +203,6 @@ export default function Login({name}:any) {
     });
    
   };
-  const keyDown =(e:any)=>{
-      if(e.which==13){
-        console.log('调用登录');
-      }
-  }
   const changePhone = (e: { target: { value: string } }) => {
     setFormData({ account: e.target.value, password: formData.password });
   };
@@ -228,7 +262,7 @@ export default function Login({name}:any) {
               <div key={item.setMealId} className="form-box1" >
                <div className="form-item">
                 <div className="form-item-title"><span className="name">{item.name}</span></div>
-                <div className="form-item-title">介绍：<span>{item.content}</span></div>
+                <div className="form-item-title"><span>{item.content}</span></div>
                 <div className="form-item-title">价格：<span className="price">￥{item.price}</span></div>
               </div>
               <div className="form-buy" onClick={()=>buyOrder(item.setMealId,item)}>购买</div>
@@ -257,7 +291,7 @@ export default function Login({name}:any) {
                 <div className="login-main">
        <div className="login-delete" onClick={()=>name[1]()}>+</div>
         <div className="login-title">
-          <div>注册</div>
+          <div>{isBack?'重置':'注册'}</div>
           <div></div>
          </div>
          <div className="form-box">
@@ -286,26 +320,30 @@ export default function Login({name}:any) {
           <div className="form-item">
             <div className="form-item-title">密码</div>
             <input
-              type="password"
+              type={isShow1?'text':'password'}
               onChange={changePassword1}
               value={signData.password1}
               placeholder="请输入密码"
             />
-            <div className="code"></div>
+            <div className={isShow1?'open-img':'close-img'} onClick={()=>setShow1(!isShow1)}></div>
           </div>
           <div className="form-item">
             <div className="form-item-title">确认密码</div>
             <input
-              type="password"
+              type={isShow2?'text':'password'}
               onChange={changePassword2}
               value={signData.password2}
               placeholder="请输入密码"
             />
-            <div className="code"></div>
+             <div className={isShow2?'open-img':'close-img'} onClick={()=>setShow2(!isShow2)}></div>
           </div>
-          <div className="submit" onClick={signAccount}>
+          {isBack?(
+            <div className="submit" onClick={setBackPassword}>
+            确定
+          </div>
+          ):(<div className="submit" onClick={signAccount}>
           注册
-        </div>
+        </div>)}
         <div className="addtional">
           <span >已有账号？</span>
           <span className="addtional-active" onClick={changeSign}>去登录</span>
@@ -338,11 +376,12 @@ export default function Login({name}:any) {
                 value={formData.password}
                 placeholder="请输入密码"
                 className="form-item-input"
+                onKeyUp={onKeyup}
               />
               <div className="code"></div>
             </div>
           </div>
-          {/* <div className="forget" onClick={setForgetType}>忘记密码</div> */}
+          <div className="forget" onClick={setForgetType}>忘记密码</div>
           <div className="submit" onClick={submit}>
             登录
           </div>

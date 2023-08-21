@@ -1,5 +1,6 @@
 import { useDebouncedCallback } from "use-debounce";
 import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { Tooltip } from 'antd';
 
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
@@ -347,14 +348,16 @@ export function ChatActions(props: {
         </div>
       )}
       {props.hitBottom && (
+          <Tooltip title="设置">
         <div
           className={`${chatStyle["chat-input-action"]} clickable`}
           onClick={props.showPromptModal}
         >
           <SettingsIcon />
         </div>
+        </Tooltip>
       )}
-
+      <Tooltip title="切换明暗度">
       <div
         className={`${chatStyle["chat-input-action"]} clickable`}
         onClick={nextTheme}
@@ -367,14 +370,16 @@ export function ChatActions(props: {
           <DarkIcon />
         ) : null}
       </div>
-
+      </Tooltip>
+      <Tooltip title="角色设定">
       <div
         className={`${chatStyle["chat-input-action"]} clickable`}
         onClick={props.showPromptHints}
       >
         <PromptIcon />
       </div>
-
+      </Tooltip>
+      <Tooltip title="面具">
       <div
         className={`${chatStyle["chat-input-action"]} clickable`}
         onClick={() => {
@@ -383,7 +388,8 @@ export function ChatActions(props: {
       >
         <MaskIcon />
       </div>
-
+      </Tooltip>
+      <Tooltip title="清除上下文">
       <div
         className={`${chatStyle["chat-input-action"]} clickable`}
         onClick={() => {
@@ -399,6 +405,7 @@ export function ChatActions(props: {
       >
         <BreakIcon />
       </div>
+      </Tooltip>
     </div>
   );
 }
@@ -721,6 +728,7 @@ export function Chat(props:any) {
               bordered
               title={Locale.Chat.Actions.ChatList}
               onClick={() => navigate(Path.Home)}
+             
             />
           </div>
           <div className="window-action-button">
@@ -728,6 +736,7 @@ export function Chat(props:any) {
               icon={<RenameIcon />}
               bordered
               onClick={renameSession}
+              tool="重命名对话"
             />
           </div>
           <div className="window-action-button">
@@ -738,12 +747,14 @@ export function Chat(props:any) {
               onClick={() => {
                 setShowExport(true);
               }}
+              tool="分享对话"
             />
           </div>
           {!isMobileScreen && (
             <div className="window-action-button">
               <IconButton
                 icon={config.tightBorder ? <MinIcon /> : <MaxIcon />}
+                tool="调整聊天框大小"
                 bordered
                 onClick={() => {
                   config.update(
