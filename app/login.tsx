@@ -24,6 +24,7 @@ export default function Login({name}:any) {
   const [isShow1,setShow1]= useState(false)
   const [isShow2,setShow2]= useState(false)
   const [isBack,setIsBack]= useState(false)
+  const [totast,setTotast] = useState(false)
 
   useEffect(()=>{
     getList()
@@ -127,9 +128,10 @@ export default function Login({name}:any) {
     // 提交
     const {code,data} = (await RegisterApi({'account':signData.account,'code':signData.code,'codeId':codeId,'password':signData.password2})) as Response;
     if(code===200){
-      alert("恭喜您，成功注册！现在您可以免费试用一天")
+      // alert("恭喜您，成功注册！现在您可以免费试用一天")
       setSignData({ account: "",code:"", password1: "",password2: ""})
-      setSign(false)
+      // setSign(false)
+      setTotast(true)
     }
     else{
       alert(data)
@@ -288,8 +290,9 @@ export default function Login({name}:any) {
           <div className="login">
             {
               sign?(
-                <div className="login-main">
-       <div className="login-delete" onClick={()=>name[1]()}>+</div>
+                <div>
+      <div className={totast?'none':"login-main"}>
+       <div className="login-delete" onClick={()=>{name[1]();setTotast(false)}}>+</div>
         <div className="login-title">
           <div>{isBack?'重置':'注册'}</div>
           <div></div>
@@ -349,6 +352,14 @@ export default function Login({name}:any) {
           <span className="addtional-active" onClick={changeSign}>去登录</span>
         </div>
         </div>
+      </div>
+      <div className={totast?'login-main':"none"}>
+        <div className="login-delete" onClick={()=>{name[1]();setTotast(false)}}>+</div>
+        <div className="login-title1">注册成功</div>
+        <div className="login-text">恭喜您获得1天会员免费试用！</div>
+        <div className="login-text">快去体验吧！</div>
+        <div className="login-button" onClick={()=>name[1]()}>立即体验</div>
+      </div>
       </div>
               ):(
                 <div className="login-main">
