@@ -198,9 +198,10 @@ export function RecordApi(data: RecordData) {
 }
 
 // 过期时间
-export function expireApi() {
+export function ExpireApi() {
   const loginInfo = localStorage.getItem("loginInfo");
-  const token = JSON.parse(loginInfo || "").data.data.token;
+  const token =JSON.parse(String(loginInfo))?JSON.parse(String(loginInfo)).data.data.token:'';
+
   return new Promise((resolve, reject) => {
     axios
       .get(rootUrl + "/web/user/expire-time", {
@@ -211,13 +212,13 @@ export function expireApi() {
         localStorage.setItem('expireTime',res.data.data)
       })
       .catch((err) => {
-        reject(err);
-        if(err.response.data && err.response.data.code === 401){
-          alert('登录信息过期，请重新登录！')
-          setTimeout(()=>{
-            localStorage.clear()
-          },500)
-        }
+        // if(err.response.data && err.response.data.code === 401){
+        //   alert(err.response.data.msg)
+        //   setTimeout(()=>{
+        //     localStorage.clear()
+        //   },500)
+        // }
+        reject(err); 
       });
   });
 }

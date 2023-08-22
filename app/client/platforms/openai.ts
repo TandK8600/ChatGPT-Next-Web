@@ -8,7 +8,7 @@ import {
   fetchEventSource,
 } from "@fortaine/fetch-event-source";
 import { prettyObject } from "@/app/utils/format";
-import { expireApi } from '../../api/user/index';
+import { ExpireApi } from '../../api/user/index';
 
 export class ChatGPTApi implements LLMApi {
   public ChatPath = "v1/chat/completions";
@@ -164,7 +164,7 @@ export class ChatGPTApi implements LLMApi {
     }
   }
   async usage() {
-    const data:any = await expireApi()
+    const data:any = await ExpireApi()
 
     return {
       used: data.data,

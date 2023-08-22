@@ -31,6 +31,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
+import { ExpireApi } from "../api/user/index";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -56,6 +57,28 @@ function useHotKey() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   });
+}
+
+let firstLoad = true
+async function getExpireTime(){
+  if(firstLoad){
+    firstLoad = false
+    const loginInfo = localStorage.getItem("loginInfo")
+    if(!loginInfo){
+      return;
+    }
+    ExpireApi().then(
+      ()=>{},
+      (err)=>{
+        if(err.response.data && err.response.data.code === 401){
+          alert(err.response.data.msg)
+          setTimeout(()=>{
+            localStorage.clear()
+          },500)
+        }
+      }
+    );
+  }
 }
 
 function useDragSideBar() {
@@ -146,6 +169,7 @@ export function SideBar(props: { className?: string,name?:any }) {
   }
 
   useHotKey();
+  getExpireTime();
 
   return (
     <div
