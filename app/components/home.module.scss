@@ -62,7 +62,7 @@
   position: relative;
   transition: width ease 0.05s;
 
-  .sidebar-countdown{
+  .sidebar-countdown,.sidebar-expired{
     font-size: 14px;
     display: flex;
     justify-content: space-between;
@@ -77,6 +77,20 @@
       display: inline-block;
     }
 
+    .sidebar-countdown-icon{
+      width: 16px;
+      height: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
+    }
+
+  }
+
+  .sidebar-expired{
+    justify-content: center;
+    padding: 7.5px 0;
   }
 
 

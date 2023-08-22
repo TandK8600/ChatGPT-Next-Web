@@ -14,8 +14,7 @@ import AddIcon from "../icons/add.svg";
 import CloseIcon from "../icons/pause.svg";
 import MaskIcon from "../icons/mask.svg";
 import PluginIcon from "../icons/github.svg";
-
-import { expireApi } from '../api/user/index';
+import CountdownIcon from "../icons/countdown.svg";
 
 import Locale from "../locales";
 
@@ -32,6 +31,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
+import { ExpireApi } from "../api/user/index";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -57,6 +57,28 @@ function useHotKey() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   });
+}
+
+let firstLoad = true
+async function getExpireTime(){
+  if(firstLoad){
+    firstLoad = false
+    const loginInfo = localStorage.getItem("loginInfo")
+    if(!loginInfo){
+      return;
+    }
+    ExpireApi().then(
+      ()=>{},
+      (err)=>{
+        if(err.response.data && err.response.data.code === 401){
+          alert(err.response.data.msg)
+          setTimeout(()=>{
+            localStorage.clear()
+          },500)
+        }
+      }
+    );
+  }
 }
 
 function useDragSideBar() {
@@ -146,19 +168,8 @@ export function SideBar(props: { className?: string,name?:any }) {
     location.href=index?"https://yunwoooo.feishu.cn/share/base/form/shrcn3DPSvAIomT34VHSMs5Atff":"https://yunwoooo.feishu.cn/share/base/form/shrcnohDkxJQfdagJNnXYRBd1If"
   }
 
-  
-  async function useExpireTime(){
-    const chatStore = useChatStore();
-    const loginInfo = localStorage.getItem("loginInfo")
-    if(loginInfo){
-      const data:any = await expireApi()
-      chatStore.expireTime = data.data
-      console.log(chatStore.expireTime)
-    }
-  }
-
-  useExpireTime();
   useHotKey();
+  getExpireTime();
 
   return (
     <div
@@ -271,10 +282,6 @@ export function SideBar(props: { className?: string,name?:any }) {
             />
           </div>
         </Link>
-        {/* 倒计时 */}
-        {new Date(chatStore.expireTime).getTime() - Date.now() < (1000 * 60 * 60 * 24  + 1000 * 30) && ( 
-          <div className={styles["sidebar-countdown"]}>付费时间余额 <Countdown  className={styles["sidebar-countdown-count"]} value={new Date(chatStore.expireTime).getTime()} valueStyle={{ color: config.theme == Theme.Dark ? '#bbbbbb' : '#303030' }}/></div>
-          )} 
         {/* 充值按钮 */}
         <div className={styles["sidebar-header-bar"]} onClick={pupBuy}>
             <IconButton
@@ -307,6 +314,28 @@ export function SideBar(props: { className?: string,name?:any }) {
           </div>
           )
         }
+        {/* 所有登录用户最后一天时显示倒计时 过期后显示已过期*/}
+        {
+          localStorage.getItem('expireTime') && ( new Date(localStorage.getItem('expireTime') as string).getTime() < Date.now() ? (
+            <div className={styles["sidebar-expired"]}>                
+              <div className={styles["sidebar-countdown-icon"]}>
+                <CountdownIcon />
+              </div>
+              会员已到期
+            </div> 
+          ):(
+          new Date(localStorage.getItem('expireTime') as string).getTime() - Date.now() < (1000 * 60 * 60 * 24  + 1000 * 30) && ( 
+            <div className={styles["sidebar-countdown"]}>
+              <div style={{display:"flex",alignItems:"center"}}>
+                <div className={styles["sidebar-countdown-icon"]}>
+                  <CountdownIcon />
+                </div>
+                会员时间剩余
+              </div> 
+              <Countdown  className={styles["sidebar-countdown-count"]} value={new Date(localStorage.getItem('expireTime') as string).getTime()} valueStyle={{ color: config.theme == Theme.Dark ? '#bbbbbb' : '#303030' }}/>
+            </div>
+          )))
+        } 
           
       </div>
       <div
