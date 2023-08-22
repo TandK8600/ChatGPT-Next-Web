@@ -208,9 +208,16 @@ export function expireApi() {
       })
       .then((res) => {
         resolve(res.data);
+        localStorage.setItem('expireTime',res.data.data)
       })
       .catch((err) => {
         reject(err);
+        if(err.response.data && err.response.data.code === 401){
+          alert('登录信息过期，请重新登录！')
+          setTimeout(()=>{
+            localStorage.clear()
+          },500)
+        }
       });
   });
 }

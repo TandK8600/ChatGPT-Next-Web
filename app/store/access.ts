@@ -4,6 +4,7 @@ import { StoreKey } from "../constant";
 import { getHeaders } from "../client/api";
 import { BOT_HELLO } from "./chat";
 import { ALL_MODELS } from "./config";
+import { expireApi } from '../api/user/index';
 
 export interface AccessControlStore {
   accessCode: string;
@@ -18,6 +19,7 @@ export interface AccessControlStore {
   enabledAccessControl: () => boolean;
   isAuthorized: () => boolean;
   fetch: () => void;
+  getExpireTime: () => void;
 }
 
 let fetchState = 0; // 0 not fetch, 1 fetching, 2 done
@@ -32,6 +34,7 @@ export const useAccessStore = create<AccessControlStore>()(
       openaiUrl: "/api/openai/",
 
       enabledAccessControl() {
+        get().getExpireTime();
         get().fetch();
 
         return get().needCode;
@@ -43,12 +46,21 @@ export const useAccessStore = create<AccessControlStore>()(
         set(() => ({ token }));
       },
       isAuthorized() {
+        get().getExpireTime();
         get().fetch();
 
         // has token or has code or disabled access control
         return (
           !!get().token || !!get().accessCode || !get().enabledAccessControl()
         );
+      },
+      async getExpireTime(){
+        if (fetchState > 0) return;
+        const loginInfo = localStorage.getItem("loginInfo")
+        if(loginInfo){
+          const data:any = await expireApi()
+          localStorage.setItem("expireTime",data.data)
+        }
       },
       fetch() {
         if (fetchState > 0) return;
