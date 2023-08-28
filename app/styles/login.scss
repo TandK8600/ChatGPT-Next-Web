@@ -1,11 +1,110 @@
+.iframe{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.none{
+  display: none;
+}
+.open-img{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  top: 41px;
+  background: url('../icons/open-eye.png');
+  background-size: cover;
+  cursor: pointer;
+}
+.close-img{
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  top: 41px;
+  background: url('../icons/close-eye.png');
+  background-size: cover;
+  cursor: pointer;
+}
+.top{
+  width: 100%;
+}
+.forget{
+  text-align: end;
+  color:#e25227;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.pay{
+  .pay-introduce{
+    max-width: 224px;
+  }
+  .pay-title{
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+  }
+  .pay-flex{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+  }
+  .pay-price{
+    text-align: right;
+    margin-bottom: 20px;
+    padding: 0 10px;
+  }
+  .pay-money{
+    color: #e25227;
+  }
+  .pay-select{
+    border: 1px solid grey;
+    border-radius: 6px;
+    padding: 5px 15px;
+    margin: auto;
+    width: 80%;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .pay-pup{
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    margin-right: 6px;
+  }
+}
+
+.price{
+  color: #e25227;
+}
+.name{
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
 .list{
-  height: 400px;
+  max-height: 390px;
   overflow-y: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.addtional{
+  position: absolute;
+  top: 3.4rem;
+  left: 6.5rem;
+  color: grey;
+
+  .addtional-active{
+    color: hwb(203 29% 10%);
+    cursor: pointer;
+  }
 }
 .login {
     width: 100vw;
     height: 100vh;
-    background-color: red;
     z-index:99999 !important;
     position: absolute;
     top: 0;
@@ -14,10 +113,35 @@
     .login-delete{
       position: absolute;
       color: #000;
+      cursor: pointer;
       right: 20px;
-      rotate: 45deg;
+      transform: rotate(45deg);
+      // rotate: 45deg;
       font-size: 36px;
       top: 20px;
+    }
+    .login-title1{
+      font-size: 30px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .login-text{
+      font-size: 22px;
+      text-align: center;
+    }
+    .login-button{
+      font-size: 23px;
+      color: #fff;
+      background-color: #e25227;
+      padding: 10px 20px;
+      width: 100px;
+      height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: auto;
+      margin-top: 15px;
+
     }
     .login-main {
       position: fixed;
@@ -36,8 +160,15 @@
         // background: url("../icons/logo.png");
         background-size: 200px 60px;
       }
+      .login-img {
+        width: 200px;
+        height: 240px;
+        background: url("../icons/wx.jpg");
+        background-size: 200px 240px;
+      }
   
       .login-title {
+        margin-bottom: 10px;
         div:first-child {
           font-size: 28px;
           font-weight: 600;
@@ -51,12 +182,14 @@
   
       .form-box {
         margin-top: 30px;
+        width: 100%;
   
         .form-item {
           position: relative;
+          width: 100%;
           display: flex;
           flex-direction: column;
-          margin-top: 20px;
+          margin-top: 10px;
   
           .form-item-title {
             margin-bottom: 10px;
@@ -65,22 +198,23 @@
           .form-item-get {
             position: absolute;
             margin-bottom: 10px;
-            font-size: 14px;
-            right: 0px;
-            top:32px;
-            background-color: #3981f4;
+            right: 3px;
+            top:32.5px;
+            border-left: 1px solid #ccc;
             padding: 8px 15px;
-            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
           }
   
           input {
             box-sizing: border-box;
-            width: 100%;
+            max-width: 100% !important;
             padding: 10px;
             padding-right: 100px;
             border: 1px solid #8c9196;
             outline-width: 1px;
             outline-color: #e25227;
+            text-align: left;
           }
   
           .code {
@@ -95,23 +229,27 @@
         }
       }
       .form-box1 {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-radius: 10px;
-        border: 1px solid grey;
+        background-color: #eee;
+        border-radius: 0 1.2rem 0rem 1.2rem;
+        margin-right: 0.5rem;
         padding: 10px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
+        margin-top: 10px;
+        width: 42%;
         .form-buy{
-          color: #3981f4;
+          background-color:skyblue;
+          color: #fefefe;
+          padding: 5px 10px;
+          text-align: center;
+          border-radius: 6px;
+          cursor: pointer;
         }
   
         .form-item {
-          width: 80%;
           position: relative;
           display: flex;
           flex-direction: column;
-          margin-top: 20px;
+          margin-top: 10px;
   
           .form-item-title {
             margin-bottom: 10px;
@@ -121,16 +259,16 @@
             position: absolute;
             margin-bottom: 10px;
             font-size: 14px;
-            right: 0px;
-            top:32px;
-            background-color: #3981f4;
+            right: 3px;
+            top:32.5px;
             padding: 8px 15px;
             border-radius: 5px;
+            border-left: 1px solid #000;
           }
   
           input {
             box-sizing: border-box;
-            width: 100%;
+            max-width: 100% !important;
             padding: 10px;
             padding-right: 100px;
             border: 1px solid #8c9196;
@@ -153,7 +291,7 @@
       .submit {
         width: 100%;
         padding: 10px 0;
-        margin-top: 30px;
+        margin-top: 15px;
         margin-bottom: 20px;
         font-size: 18px;
         font-weight: bold;

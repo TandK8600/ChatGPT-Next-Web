@@ -91,6 +91,9 @@ interface ChatStore {
   summarizeSession: () => void;
   updateStat: (message: ChatMessage) => void;
   backType: (code: number) => void;
+  changeTheme: (type: string) => void;
+  changePupType: (type: string) => void;
+  changeLogin: (type: string) => void;
   updateCurrentSession: (updater: (session: ChatSession) => void) => void;
   updateMessage: (
     sessionIndex: number,
@@ -102,6 +105,7 @@ interface ChatStore {
   getMemoryPrompt: () => ChatMessage;
 
   clearAllData: () => void;
+  expireTime: string,
 }
 
 function countMessages(msgs: ChatMessage[]) {
@@ -116,6 +120,10 @@ export const useChatStore = create<ChatStore>()(
       globalId: 0,
       type:0,
       id:0,
+      pupType:'login',
+      login:true,
+      theme:'',
+      expireTime:'',
 
       clearSessions() {
         set(() => ({
@@ -230,8 +238,16 @@ export const useChatStore = create<ChatStore>()(
       },
       backType(code:number){
         this.type=code
-        console.log('code',code);
         
+      },
+      changePupType(type:string){
+        this.pupType=type
+      },
+      changeLogin(type:string){
+        this.login=type
+      },
+      changeTheme(type:string){
+        this.theme=type
       },
 
       onNewMessage(message) {
@@ -501,6 +517,7 @@ export const useChatStore = create<ChatStore>()(
           messages: [toBeSummarizedMsgs[toBeSummarizedMsgs.length - 2].content],
           parentId:
             parentList.length > 1 ? get().id : 0,
+          theme:this.theme,
           requestBody:JSON.parse(String(localStorage.getItem("requestPayload"))),
           responseBody: { responseBody: localStorage.getItem("responseText") }
         };
@@ -510,6 +527,29 @@ export const useChatStore = create<ChatStore>()(
             id: id
           }));
         },(err)=>{
+          // 未授权
+          if(err.response.status===401){
+            // 鉴权失败---登录页面
+            if(err.response.data.code===401){
+              set(() => ({
+                pupType: "login"
+              }));
+            }
+            // 过期---续费页面
+            if(err.response.data.code===402){
+              set(() => ({
+                pupType: "buy"
+              }));
+            }
+            // 禁用---联系客服页面
+            if(err.response.data.code===403){
+              set(() => ({
+                pupType: "link"
+              }));
+            }
+            alert(err.response.data.msg)
+            
+          }
           const data = err.response.status
           set(() => ({
             type: data

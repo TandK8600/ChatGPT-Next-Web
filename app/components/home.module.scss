@@ -55,12 +55,44 @@
   width: var(--sidebar-width);
   box-sizing: border-box;
   padding: 20px;
-  background-color: rgba(144, 144, 144, 0.2);
+  background-color:var(--hover-color);
   display: flex;
   flex-direction: column;
   box-shadow: inset -2px 0px 2px 0px rgb(0, 0, 0, 0.05);
   position: relative;
   transition: width ease 0.05s;
+
+  .sidebar-countdown,.sidebar-expired{
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 12px;
+    margin-bottom: 10px;
+    background: hsl(356deg 72% 47% / 10%);
+    border-radius: 0 10px;
+    box-shadow: var(--card-shadow);
+
+    >.sidebar-countdown-count{
+      display: inline-block;
+    }
+
+    .sidebar-countdown-icon{
+      width: 16px;
+      height: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
+    }
+
+  }
+
+  .sidebar-expired{
+    justify-content: center;
+    padding: 7.5px 0;
+  }
+
 
   .sidebar-header-bar {
     display: flex;
@@ -80,7 +112,6 @@
     align-items: center;
     margin: -2px 0px 10px;
     width: 49%;
-    border-radius: 10px;
     overflow: hidden;
 
     .sidebar-bar-button {

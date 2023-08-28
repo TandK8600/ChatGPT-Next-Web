@@ -124,11 +124,27 @@ function Screen() {
     chatStore.backType(0)
     setCode(0)
   }
-
+  const changePupType = (text:string)=>{
+    chatStore.changePupType(text)
+  }
+  const changeLogin = (text:boolean,code?:number)=>{
+    if(!code){
+      chatStore.changeLogin(String(text))
+    }
+    if(!text){
+      setCode(0)
+    }
+    else{
+      if(code===402){
+        chatStore.changePupType('buy')
+      }
+      setCode(401)
+    }
+  }
 
   return (
     <div>
-      {code===401?(<Login changeType={changeType}/>):(<div />)}
+      {code===401?(<Login name={[chatStore.pupType,changeType,changePupType,changeLogin]} />):(<div />)}
         <div
           className={
             styles.container +
@@ -139,14 +155,14 @@ function Screen() {
             }`
           }
         >
-          <SideBar className={isHome ? styles["sidebar-show"] : ""} />
+          <SideBar name={changeLogin} className={isHome ? styles["sidebar-show"] : ""} />
 
           <div className={styles["window-content"]} id={SlotID.AppBody}>
             <Routes>
-              <Route path={Path.Home} element={<Chat />} />
+              <Route  path={Path.Home} element={<Chat/>} />
               <Route path={Path.NewChat} element={<NewChat />} />
               <Route path={Path.Masks} element={<MaskPage />} />
-              <Route path={Path.Chat} element={<Chat />} />
+              <Route path={Path.Chat} element={<Chat name={changeLogin} />} />
               <Route path={Path.Settings} element={<Settings />} />
             </Routes>
           </div>

@@ -84,11 +84,27 @@ export function CodeApi( params: accountType) {
 export function ListApi() {
   const temporary = localStorage.getItem("temporary");
   const token =temporary?JSON.parse(temporary).data.token:'';
-  console.log(temporary,token);
-  
   return new Promise((resolve, reject) => {
     axios
       .get(rootUrl + "/web/user/set-meal-list",{
+        headers: { authorization: `${token}` }
+      })
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+// 获取账号状态
+export function AccountApi() {
+  const temporary = localStorage.getItem("temporary");
+  const token =temporary?JSON.parse(temporary).data.token:'';
+  return new Promise((resolve, reject) => {
+    axios
+      .get(rootUrl + "/web/user/verify",{
         headers: { authorization: `${token}` }
       })
       .then((res) => {
@@ -118,11 +134,42 @@ export function OrderApi(setMealId:number) {
   });
 }
 
+// 查看订单状态
+export function StatusApi(orderId:number) {
+  const temporary = localStorage.getItem("temporary");
+  const token =temporary?JSON.parse(temporary).data.token:'';
+  return new Promise((resolve, reject) => {
+    axios
+      .get(rootUrl + `/web/user/order/${orderId}`
+      )
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 // 注册
 export function RegisterApi(data:RegisterData) {
   return new Promise((resolve, reject) => {
     axios
       .post(rootUrl + "/web/user/register", data)
+      .then((res) => {
+        resolve(res.data);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+// 找回密码
+export function RenameApi(data:RegisterData) {
+  return new Promise((resolve, reject) => {
+    axios
+      .put(rootUrl + "/web/user/password", data)
       .then((res) => {
         resolve(res.data);
       })
@@ -151,9 +198,10 @@ export function RecordApi(data: RecordData) {
 }
 
 // 过期时间
-export function expireApi() {
+export function ExpireApi() {
   const loginInfo = localStorage.getItem("loginInfo");
-  const token = JSON.parse(loginInfo || "").data.data.token;
+  const token =JSON.parse(String(loginInfo))?JSON.parse(String(loginInfo)).data.data.token:'';
+
   return new Promise((resolve, reject) => {
     axios
       .get(rootUrl + "/web/user/expire-time", {
@@ -161,9 +209,16 @@ export function expireApi() {
       })
       .then((res) => {
         resolve(res.data);
+        localStorage.setItem('expireTime',res.data.data)
       })
       .catch((err) => {
-        reject(err);
+        // if(err.response.data && err.response.data.code === 401){
+        //   alert(err.response.data.msg)
+        //   setTimeout(()=>{
+        //     localStorage.clear()
+        //   },500)
+        // }
+        reject(err); 
       });
   });
 }

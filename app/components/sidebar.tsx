@@ -1,20 +1,24 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import styles from "./home.module.scss";
+
+import { Statistic } from 'antd';
+const { Countdown } = Statistic;
 
 import { IconButton } from "./button";
 import SettingsIcon from "../icons/settings.svg";
 import SendWhiteIcon from "../icons/plugin.svg";
 import GithubIcon from "../icons/github.svg";
-// import ChatGptIcon from "../icons/chatgpt.svg";
+import ChatGptIcon from "../icons/brain.svg";
 import AddIcon from "../icons/add.svg";
-import CloseIcon from "../icons/close.svg";
+import CloseIcon from "../icons/pause.svg";
 import MaskIcon from "../icons/mask.svg";
 import PluginIcon from "../icons/github.svg";
+import CountdownIcon from "../icons/countdown.svg";
 
 import Locale from "../locales";
 
-import { useAppConfig, useChatStore } from "../store";
+import { Theme, useAppConfig, useChatStore } from "../store";
 
 import {
   MAX_SIDEBAR_WIDTH,
@@ -27,7 +31,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
 import dynamic from "next/dynamic";
-import { showToast } from "./ui-lib";
+import { ExpireApi } from "../api/user/index";
 
 const ChatList = dynamic(async () => (await import("./chat-list")).ChatList, {
   loading: () => null,
@@ -53,6 +57,28 @@ function useHotKey() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   });
+}
+
+let firstLoad = true
+async function getExpireTime(){
+  if(firstLoad){
+    firstLoad = false
+    const loginInfo = localStorage.getItem("loginInfo")
+    if(!loginInfo){
+      return;
+    }
+    ExpireApi().then(
+      ()=>{},
+      (err)=>{
+        if(err.response.data && err.response.data.code === 401){
+          alert(err.response.data.msg)
+          setTimeout(()=>{
+            localStorage.clear()
+          },500)
+        }
+      }
+    );
+  }
 }
 
 function useDragSideBar() {
@@ -103,19 +129,47 @@ function useDragSideBar() {
   };
 }
 
-export function SideBar(props: { className?: string }) {
+export function SideBar(props: { className?: string,name?:any }) {
   const chatStore = useChatStore();
+  const [isLoginText,setLogin]= useState('初始值')
 
   // drag side bar
   const { onDragMouseDown, shouldNarrow } = useDragSideBar();
   const navigate = useNavigate();
   const config = useAppConfig();
 
+  const exit = ()=>{
+    if(confirm('是否确认退出登录？')){
+      alert('已退出登录！')
+      setTimeout(()=>{
+        localStorage.clear()
+      pupLogin()
+      setLogin(''+localStorage.getItem('loginInfo'))
+      },500)
+    }
+  }
+
+  const pupLogin = ()=>{
+    chatStore.changePupType('login')
+    props.name(true)
+  }
+  const pupBuy = ()=>{
+    if(!localStorage.getItem("loginInfo")){
+      alert('请先登录账号再充值')
+      chatStore.changePupType('login')
+    }
+    else{
+      chatStore.changePupType('buy')
+    }
+    props.name(true)
+  }
+
   const FeedBack = (index:number)=>{
     location.href=index?"https://yunwoooo.feishu.cn/share/base/form/shrcn3DPSvAIomT34VHSMs5Atff":"https://yunwoooo.feishu.cn/share/base/form/shrcnohDkxJQfdagJNnXYRBd1If"
   }
 
   useHotKey();
+  getExpireTime();
 
   return (
     <div
@@ -228,6 +282,61 @@ export function SideBar(props: { className?: string }) {
             />
           </div>
         </Link>
+        {/* 充值按钮 */}
+        <div className={styles["sidebar-header-bar"]} onClick={pupBuy}>
+            <IconButton
+              icon={<ChatGptIcon />}
+              text={shouldNarrow ? undefined : "充值"}
+              className={styles["sidebar-bar-button"]}
+              shadow
+            />
+          </div>
+          
+        {/* 登录/退出登录 */}
+        {
+          chatStore.login!=='false'&&isLoginText&&!localStorage.getItem('loginInfo')?(
+            <div className={styles["sidebar-header-bar"]} onClick={pupLogin}>
+            <IconButton
+              icon={<CloseIcon />}
+              text={shouldNarrow ? undefined : "登录"}
+              className={styles["sidebar-bar-button"]}
+              shadow
+            />
+          </div>
+          ):(
+            <div className={styles["sidebar-header-bar"]} onClick={exit}>
+            <IconButton
+              icon={<CloseIcon />}
+              text={shouldNarrow ? undefined : "退出登录"}
+              className={styles["sidebar-bar-button"]}
+              shadow
+            />
+          </div>
+          )
+        }
+        {/* 所有登录用户最后一天时显示倒计时 过期后显示已过期*/}
+        {
+          localStorage.getItem('expireTime') && ( new Date(localStorage.getItem('expireTime') as string).getTime() < Date.now() ? (
+            <div className={styles["sidebar-expired"]}>                
+              <div className={styles["sidebar-countdown-icon"]}>
+                <CountdownIcon />
+              </div>
+              会员已到期
+            </div> 
+          ):(
+          new Date(localStorage.getItem('expireTime') as string).getTime() - Date.now() < (1000 * 60 * 60 * 24  + 1000 * 30) && ( 
+            <div className={styles["sidebar-countdown"]}>
+              <div style={{display:"flex",alignItems:"center"}}>
+                <div className={styles["sidebar-countdown-icon"]}>
+                  <CountdownIcon />
+                </div>
+                会员时间剩余
+              </div> 
+              <Countdown  className={styles["sidebar-countdown-count"]} value={new Date(localStorage.getItem('expireTime') as string).getTime()} valueStyle={{ color: config.theme == Theme.Dark ? '#bbbbbb' : '#303030' }}/>
+            </div>
+          )))
+        } 
+          
       </div>
       <div
         className={styles["sidebar-drag"]}
