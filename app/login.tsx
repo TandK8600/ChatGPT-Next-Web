@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { CodeApi, LoginApi,RegisterApi,ListApi,OrderApi, StatusApi,RenameApi } from "./api/user";
 import "./styles/login.scss";
 
-
 interface Response {
   code: number;
   msg: string;
@@ -181,6 +180,7 @@ export default function Login({name}:any) {
        }
        if(res.code===200){
         localStorage.setItem("temporary", JSON.stringify(res));
+        localStorage.setItem("expireTime",res.data.expireTime)
         alert('登录成功')
         name[1]()
         name[3](false)

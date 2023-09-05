@@ -24,6 +24,19 @@ export const metadata = {
   },
 };
 
+const getAnalyticsTag = () => {
+  return {
+    __html: `
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?9ff03c19a80c2d8fb5afa80763c79c75";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();`,
+  }
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -34,11 +47,10 @@ export default function RootLayout({
       <head>
         <meta name="version" content={buildConfig.commitId} />
         <link rel="manifest" href="/site.webmanifest"></link>
+        <script dangerouslySetInnerHTML={getAnalyticsTag()}/>
         <script src="/serviceWorkerRegister.js" defer></script>
       </head>
-      <body>
-        {children}
-        </body>
+      <body>{children}</body>
     </html>
   );
 }

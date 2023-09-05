@@ -105,6 +105,7 @@ interface ChatStore {
   getMemoryPrompt: () => ChatMessage;
 
   clearAllData: () => void;
+  expireTime: string,
 }
 
 function countMessages(msgs: ChatMessage[]) {
@@ -122,6 +123,7 @@ export const useChatStore = create<ChatStore>()(
       pupType:'login',
       login:true,
       theme:'',
+      expireTime:'',
 
       clearSessions() {
         set(() => ({
