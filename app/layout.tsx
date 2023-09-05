@@ -50,7 +50,9 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={getAnalyticsTag()}/>
         <script src="/serviceWorkerRegister.js" defer></script>
       </head>
-    
+
+
+      
       <body>{children}</body>
     </html>
   );
