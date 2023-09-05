@@ -1,5 +1,6 @@
 import axios from "axios";
 
+// 正式环境
 let rootUrl = "https://gpt.yunwooo.com";
 
 interface LoginData {
@@ -16,7 +17,7 @@ interface RegisterData {
 account?: string
 
 /** 验证码 */
-code: string
+code: string 
 
 /** codeId */
 codeId: string
