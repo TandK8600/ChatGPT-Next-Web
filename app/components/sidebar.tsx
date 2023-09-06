@@ -179,9 +179,9 @@ export function SideBar(props: { className?: string,name?:any }) {
     >
       <div className={styles["sidebar-logo"] + " no-dark"}></div>
       <div className={styles["sidebar-header"]}>
-        <div className={styles["sidebar-title"]}>地主家的傻儿子</div>
+        <div className={styles["sidebar-title"]}>YY同学</div>
         <div className={styles["sidebar-sub-title"]}>
-          与傻儿子畅聊的快乐时光
+          与YY同学畅聊的快乐时光
         </div>
       </div>
       <div
