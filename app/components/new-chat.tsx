@@ -193,7 +193,6 @@ export function NewChat() {
           {Locale.NewChat.Skip}
         </div>
       </div>
-
       <div className={styles["masks"]} ref={maskRef}>
         {groups.map((masks, i) => (
           <div key={i} className={styles["mask-row"]}>
