@@ -50,6 +50,19 @@ interface RecordData {
 
   /** 总共花费的token */
   totalTokens?: number;
+
+  /** 面具内容 */
+  webMaskROList?: MaskData[];
+  
+}
+
+interface MaskData {
+   /** 面具内容 */
+   maskMessages?: Object|null;
+
+   /** 面具角色 */
+   maskRole?: string;
+
 }
 
 // 登录

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { trimTopic } from "../utils";
+import maskList from '../data/masks.json'
 
 import Locale from "../locales";
 import { showToast } from "../components/ui-lib";
@@ -509,11 +510,22 @@ export const useChatStore = create<ChatStore>()(
         const parentList = toBeSummarizedMsgs.filter(
           (item) => item.role === "assistant",
         );
+        const content = maskList.filter((item)=>item.name===this.theme)
+        console.log(content);
+        console.log(content.length>0?content[0].context:[]);
+        let maskContent:any = []
+        if(content.length>0){
+          maskContent=[]
+          content[0].context.forEach((item)=>{
+            maskContent.push({maskRole:item.role,maskMessages:item.content})
+          })
+        }
         const parmas = {
           answerMessages: {
             answerMessages:
               toBeSummarizedMsgs[toBeSummarizedMsgs.length - 1].content,
           },
+          webMaskROList:maskContent,
           messages: [toBeSummarizedMsgs[toBeSummarizedMsgs.length - 2].content],
           parentId:
             parentList.length > 1 ? get().id : 0,
@@ -521,6 +533,8 @@ export const useChatStore = create<ChatStore>()(
           requestBody:JSON.parse(String(localStorage.getItem("requestPayload"))),
           responseBody: { responseBody: localStorage.getItem("responseText") }
         };
+        console.log(parmas);
+        
         RecordApi(parmas).then((res: any) => {
           const id = res.msg
           set(() => ({
