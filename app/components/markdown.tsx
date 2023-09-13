@@ -132,28 +132,28 @@ export function Markdown(
   const parent = props.parentRef?.current;
   const md = mdRef.current;
 
-  const checkInView = () => {
-    if (parent && md) {
-      const parentBounds = parent.getBoundingClientRect();
-      const twoScreenHeight = Math.max(500, parentBounds.height * 2);
-      const mdBounds = md.getBoundingClientRect();
-      const parentTop = parentBounds.top - twoScreenHeight;
-      const parentBottom = parentBounds.bottom + twoScreenHeight;
-      const isOverlap =
-        Math.max(parentTop, mdBounds.top) <=
-        Math.min(parentBottom, mdBounds.bottom);
-      inView.current = isOverlap;
-    }
+  // const checkInView = () => {
+  //   if (parent && md) {
+  //     const parentBounds = parent.getBoundingClientRect();
+  //     const twoScreenHeight = Math.max(500, parentBounds.height * 2);
+  //     const mdBounds = md.getBoundingClientRect();
+  //     const parentTop = parentBounds.top - twoScreenHeight;
+  //     const parentBottom = parentBounds.bottom + twoScreenHeight;
+  //     const isOverlap =
+  //       Math.max(parentTop, mdBounds.top) <=
+  //       Math.min(parentBottom, mdBounds.bottom);
+  //     inView.current = isOverlap;
+  //   }
 
-    if (inView.current && md) {
-      renderedHeight.current = Math.max(
-        renderedHeight.current,
-        md.getBoundingClientRect().height,
-      );
-    }
-  };
+  //   if (inView.current && md) {
+  //     renderedHeight.current = Math.max(
+  //       renderedHeight.current,
+  //       md.getBoundingClientRect().height,
+  //     );
+  //   }
+  // };
 
-  setTimeout(() => checkInView(), 1);
+  // setTimeout(() => checkInView(), 1);
 
   return (
     <div
@@ -169,6 +169,7 @@ export function Markdown(
       onContextMenu={props.onContextMenu}
       onDoubleClickCapture={props.onDoubleClickCapture}
     >
+      {/* {inView.current && */}
       {inView.current &&
         (props.loading ? (
           <LoadingIcon />
