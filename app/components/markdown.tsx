@@ -161,7 +161,7 @@ export function Markdown(
       style={{
         fontSize: `${props.fontSize ?? 14}px`,
         height:
-          !inView.current && renderedHeight.current > 0
+          renderedHeight.current > 0
             ? renderedHeight.current
             : "auto",
       }}
@@ -170,8 +170,7 @@ export function Markdown(
       onDoubleClickCapture={props.onDoubleClickCapture}
     >
       {/* {inView.current && */}
-      {inView.current &&
-        (props.loading ? (
+      {(props.loading ? (
           <LoadingIcon />
         ) : (
           <MarkdownContent content={props.content} />
