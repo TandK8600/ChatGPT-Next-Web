@@ -766,11 +766,11 @@ export function Chat(props:any) {
           )}
         </div>
 
-        {/* <PromptToast
+        <PromptToast
           showToast={!hitBottom}
           showModal={showPromptModal}
           setShowModal={setShowPromptModal}
-        /> */}
+        />
       </div>
 
       <div
