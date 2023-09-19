@@ -177,7 +177,7 @@ const cn = {
   },
   Store: {
     DefaultTopic: "新的聊天",
-    BotHello: "你今天还是这么好看，聊两句呗",
+    BotHello: "### 你好，我是YY ###\n作为你的智能伙伴，我既能写文案、想点子，又能陪你聊天、答疑解惑。\n想知道我还能做什么？[点击这里快速上手！](#/masks)快来和我对话吧，解锁我的无限潜能！",
     Error: "出错了，稍后重试吧",
     Prompt: {
       History: (content: string) => "这是历史聊天总结作为前情提要：" + content,
