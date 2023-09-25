@@ -531,8 +531,7 @@ export const useChatStore = create<ChatStore>()(
           },
           webMaskROList:maskContent,
           messages: [toBeSummarizedMsgs[toBeSummarizedMsgs.length - 2].content],
-          parentId:
-            parentList.length > 1 ? get().id : 0,
+          parentId:get().id,
           theme:this.theme,
           requestBody:JSON.parse(String(localStorage.getItem("requestPayload"))),
           responseBody: { responseBody: localStorage.getItem("responseText") }
