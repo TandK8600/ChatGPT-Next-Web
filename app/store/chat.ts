@@ -500,6 +500,7 @@ export const useChatStore = create<ChatStore>()(
         const lastSummarizeIndex = session.messages.length;
 
         console.log(
+          get(),
           "[Chat History] ",
           toBeSummarizedMsgs,
           historyMsgLength,
@@ -510,6 +511,8 @@ export const useChatStore = create<ChatStore>()(
         const parentList = toBeSummarizedMsgs.filter(
           (item) => item.role === "assistant",
         );
+        console.log(parentList);
+        
         const content = maskList.filter((item)=>item.name===this.theme)
         console.log(content);
         console.log(content.length>0?content[0].context:[]);
@@ -520,6 +523,7 @@ export const useChatStore = create<ChatStore>()(
             maskContent.push({maskRole:item.role,maskMessages:item.content})
           })
         }
+        
         const parmas = {
           answerMessages: {
             answerMessages:
