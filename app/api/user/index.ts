@@ -236,3 +236,17 @@ export function ExpireApi() {
       });
   });
 }
+
+// 获取accesstoken
+// export function GetAccessTokenApi() {
+//   return new Promise((resolve, reject) => {
+//     axios
+//       .get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx42fd3d14874e6406&secret=1d96441a9aa5d6a93ac45fb3f4b94d6b')
+//       .then((res) => {
+//         resolve(res.data);
+//       })
+//       .catch((err) => {
+//         reject(err); 
+//       });
+//   });
+// }
